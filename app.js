@@ -19,7 +19,7 @@ sequelize
   });
 
 const corsOption = {
-  origin: ["http://localhost:3005", "*"],
+  origin: ["http://localhost:3000", "*"],
   credentials: true,
 };
 
@@ -34,6 +34,6 @@ app.use('/', async (req, res) => {
   res.send('hi');
 });
 
-app.listen(3000, () => {
+app.listen(80, () => {
   console.log(3000, '번 포트에서 대기중');
 });
