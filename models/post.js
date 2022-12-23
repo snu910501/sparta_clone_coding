@@ -1,37 +1,43 @@
 const Sequelize = require('sequelize');
 
-module.exports = class User extends Sequelize.Model {
+module.exports = class Post extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        userId: {
+        postId: {
           allowNull: true,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        email: {
-          unique: true,
-          type: Sequelize.STRING(45),
-          allowNull: true,
-        },
-        nickname: {
-          unique: true,
+        title: {
+          type: Sequelize.STRING(60),
           allowNull: false,
-          type: Sequelize.STRING(45),
         },
-        password: {
+        content: {
+          allowNull: false,
+          type: Sequelize.STRING(60),
+        },
+        tag: {
           type: Sequelize.STRING(60),
           allowNull: true,
         },
-        provider: {
-          type: Sequelize.STRING(10),
+        view: {
+          type: Sequelize.NUMBER(10),
           defaultValue: 'local',
         },
-        snsId: {
-          type: Sequelize.STRING(30),
+        compVid: {
+          type: Sequelize.STRING(),
           allowNull: true,
-        }
+        },
+        origVid: {
+          type: Sequelize.STRING(),
+          allowNull: true,
+        },
+        thumbnail: {
+          type: Sequelize.STRING(),
+          allowNull: true,
+        }     
       },
       {
         sequelize,
@@ -45,6 +51,6 @@ module.exports = class User extends Sequelize.Model {
     );
   }
   static associate(db) {
-    this.hasMany(models.Posts);
+    this.belongsTo(models.Users);
   }
 };
