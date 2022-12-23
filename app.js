@@ -34,6 +34,6 @@ app.use('/', async (req, res) => {
   res.send('hi');
 });
 
-app.listen(3005, () => {
-  console.log(3005, '번 포트에서 대기중');
+app.listen(3000, () => {
+  console.log(3000, '번 포트에서 대기중');
 });
