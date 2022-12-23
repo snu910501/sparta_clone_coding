@@ -42,8 +42,8 @@ module.exports = class Post extends Sequelize.Model {
       {
         sequelize,
         timestamps: false,
-        modelName: 'User',
-        tableName: 'users',
+        modelName: 'Post',
+        tableName: 'posts',
         paranoid: false,
         charset: 'utf8',
         collate: 'utf8_general_ci',
@@ -51,6 +51,6 @@ module.exports = class Post extends Sequelize.Model {
     );
   }
   static associate(db) {
-    this.belongsTo(models.Users);
+    this.belongsTo(models.User);
   }
 };
