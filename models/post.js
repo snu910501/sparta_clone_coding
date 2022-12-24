@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
 module.exports = class Post extends Sequelize.Model {
   static init(sequelize) {
@@ -11,20 +11,20 @@ module.exports = class Post extends Sequelize.Model {
           type: Sequelize.INTEGER,
         },
         title: {
-          type: Sequelize.STRING(60),
-          allowNull: false,
+          type: Sequelize.STRING(),
+          allowNull: true,
         },
         content: {
-          allowNull: false,
-          type: Sequelize.STRING(60),
+          allowNull: true,
+          type: Sequelize.STRING(),
         },
         tag: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.STRING(),
           allowNull: true,
         },
         view: {
-          type: Sequelize.NUMBER(10),
-          defaultValue: 'local',
+          type: Sequelize.INTEGER(),
+          defaultValue: 0,
         },
         compVid: {
           type: Sequelize.STRING(),
@@ -37,20 +37,23 @@ module.exports = class Post extends Sequelize.Model {
         thumbnail: {
           type: Sequelize.STRING(),
           allowNull: true,
-        }     
+        },
       },
       {
         sequelize,
         timestamps: false,
-        modelName: 'Post',
-        tableName: 'posts',
+        modelName: "Post",
+        tableName: "posts",
         paranoid: false,
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
+        charset: "utf8",
+        collate: "utf8_general_ci",
       }
     );
   }
   static associate(db) {
-    this.belongsTo(models.User);
+    db.Post.belongsTo(db.User, {
+      foreignKey: "userId",
+      targetKey: "userId",
+    });
   }
 };
