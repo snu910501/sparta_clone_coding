@@ -8,7 +8,6 @@ class SignupRepository {
           email: email
         }
       });
-      console.log(emailExist);
       return emailExist;
     } catch (err) {
       throw err
