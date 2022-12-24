@@ -28,7 +28,6 @@ class LoginController {
       return res.status(err.status).json({ errorMessage: err.errorMessage })
     }
   }
-
 }
 
 module.exports = LoginController

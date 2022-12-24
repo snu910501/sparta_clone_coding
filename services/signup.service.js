@@ -4,6 +4,7 @@ const { signupValidate } = require('../middlewares/signupValidate');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 class SignupService {
   signupRepository = new SignupRepository()
 
@@ -26,7 +27,6 @@ class SignupService {
 
   registerUser = async (email, nickname, password, passwordConfirm) => {
     try {
-
       //이메일, 비번 검사하는 단계
       let signupValidateResult = await signupValidate(email, password, passwordConfirm);
 

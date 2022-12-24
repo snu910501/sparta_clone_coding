@@ -72,7 +72,6 @@ class LoginService {
     } catch (err) {
       console.log('loginService kakaoLogin Error', err)
       throw err
-
     }
   }
 }
