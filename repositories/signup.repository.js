@@ -21,7 +21,6 @@ class SignupRepository {
         nickname: nickname,
         password: hashedPassword
       })
-
       return user;
     } catch (err) {
       console.log('signupRepository-registerUser 에러', err)
