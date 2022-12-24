@@ -7,7 +7,7 @@ class SignupController {
 
   checkEmail = async (req, res, next) => {
     try {
-      const { email } = req.body
+      const email = req.body.emil
       const emailExist = await this.signupService.checkEmail(email);
 
       if (emailExist == true) {
