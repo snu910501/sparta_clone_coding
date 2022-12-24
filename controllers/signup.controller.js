@@ -17,6 +17,7 @@ class SignupController {
       }
     } catch (err) {
       console.log('zz', err);
+      console.log(err.status, err.errorMessage);
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage })
       } else {
