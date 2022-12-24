@@ -5,7 +5,7 @@ class PostController {
 
   createPost = async (req, res) => {
     try {
-      const userId = 1;
+      const userId = res.locals.user;
       const { title, content, tag } = req.body;
       const vid = req.file;
 
