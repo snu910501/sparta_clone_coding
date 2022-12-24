@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
 module.exports = class User extends Sequelize.Model {
   static init(sequelize) {
@@ -26,21 +26,21 @@ module.exports = class User extends Sequelize.Model {
         },
         provider: {
           type: Sequelize.STRING(10),
-          defaultValue: 'local',
+          defaultValue: "local",
         },
         snsId: {
           type: Sequelize.STRING(30),
           allowNull: true,
-        }
+        },
       },
       {
         sequelize,
         timestamps: false,
-        modelName: 'User',
-        tableName: 'users',
+        modelName: "User",
+        tableName: "users",
         paranoid: false,
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
+        charset: "utf8",
+        collate: "utf8_general_ci",
       }
     );
   }
