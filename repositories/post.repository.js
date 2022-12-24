@@ -34,7 +34,8 @@ class PostRepository {
           "postId",
           "title",
           "thumbnail",
-          "compVid",
+          // "compVid",
+          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
           "view",
