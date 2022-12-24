@@ -1,3 +1,6 @@
+// const multer = require("multer");
+// const multerS3 = require("multer-s3");
+// const AWS = require("aws-sdk");
 const { S3 } = require("aws-sdk");
 const fs = require("fs");
 const path = require("path");
@@ -14,6 +17,8 @@ module.exports = uploadVidToS3 = async (vid) => {
   const result = await s3
     .upload({
       Bucket: "clone-coding-syk",
+      contentType: "video/mp4",
+      ContentDisposition: "inline", // FE 재생 해주는 태그
       // S3 - originals 폴더에 저장
       Key: `originals/${Date.now()}${vid.originalname}`,
       Body: fileStream,
