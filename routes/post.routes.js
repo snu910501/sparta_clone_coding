@@ -29,7 +29,7 @@ router.post(
   postController.createPost
 );
 router.get("/:postId", postController.findPost);
-// router.put('/:postId', authMiddleware, upload.array('images', 5), postController.updatePost);
-// router.delete('/:postId', authMiddleware, postController.deletePost);
+router.patch("/:postId", postController.updatePost);
+router.delete("/:postId", authMiddleware, postController.deletePost);
 
 module.exports = router;
