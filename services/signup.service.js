@@ -13,7 +13,7 @@ class SignupService {
     try {
       let emailExist = await this.signupRepository.checkEmail(email);
       if (emailExist) {
-        const errorMiddleware = new ErrorMiddleware(405, '이메일이 존재하는디? ')
+        const errorMiddleware = new ErrorMiddleware(502, '이메일이 존재하는디? ')
         throw errorMiddleware
       } else {
         return true;
