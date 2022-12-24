@@ -21,5 +21,6 @@ const upload = multer({
 
 router.post('/', upload.array('image', 1), signupController.registerUser);
 router.post('/emailcheck', signupController.checkEmail);
+router.post('/kakao', signupController.registerKakaoUser)
 
 module.exports = router;

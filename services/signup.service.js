@@ -2,6 +2,7 @@ const SignupRepository = require('../repositories/signup.repository');
 const ErrorMiddleware = require("../middlewares/errorMiddleware");
 const { signupValidate } = require('../middlewares/signupValidate');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 class SignupService {
   signupRepository = new SignupRepository()
@@ -35,6 +36,33 @@ class SignupService {
 
     } catch (err) {
       console.log('signupService-registerUser 에러')
+      throw err;
+    }
+  };
+
+  registerKakaoUser = async (email, nickname, snsId) => {
+    try {
+      const userExist = await this.signupRepository.checkEmail(email);
+
+      if (userExist) {
+        const token = jwt.sign(
+          {
+            userId: userExist.snsId,
+            email: userExist.email,
+            nickname: userExist.nickname,
+            provider: 'kakao',
+          },
+          process.env.SECRET_KEY,
+          { expiresIn: '1h' }
+        );
+
+        return token
+      } else {
+        let user = await this.signupRepository.registerKakaoUser(email, snsId, nickname);
+        return user;
+      }
+    } catch (err) {
+      console.log('signupService-registerKakaoUser 에러', err)
       throw err;
     }
   }

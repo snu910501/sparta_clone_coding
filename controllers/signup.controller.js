@@ -16,7 +16,11 @@ class SignupController {
         return res.status(502).json({ errorMessage: '가입 불가능한 이메일입니다.' })
       }
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage })
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage })
+      } else {
+        return res.status(500).json({ errorMessage: err })
+      }
     }
   };
 
@@ -32,9 +36,33 @@ class SignupController {
         return res.status(502).json({ errorMessage: '이메일 중복확인을 먼저 하세여.' })
       }
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage })
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage })
+      } else {
+        return res.status(500).json({ errorMessage: err })
+      }
     }
+  };
 
+  registerKakaoUser = async (req, res, next) => {
+    try {
+      const { email, nickname, snsId } = req.body;
+
+      let data = await this.signupService.registerKakaoUser(email, nickname, snsId)
+      if (typeof data == String) {
+        return res.status(200).json({ message: '회원가입 성공' })
+      } else {
+        return res.status(200).json({ result: true, token: data })
+      }
+
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage })
+      } else {
+        return res.status(500).json({ errorMessage: err })
+      }
+
+    }
   }
 }
 

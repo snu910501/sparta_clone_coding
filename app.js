@@ -8,6 +8,7 @@ const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 
 const app = express();
+app.set('port', process.env.NODE_ENV || '3000')
 
 sequelize
   .sync({ force: false })
@@ -32,6 +33,6 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
-app.listen(3000, () => {
-  console.log(3000, '번 포트에서 대기중');
+app.listen(app.get('port'), () => {
+  console.log(app.get('port'), '번 포트에서 대기중');
 });
