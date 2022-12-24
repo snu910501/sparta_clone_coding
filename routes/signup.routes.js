@@ -18,7 +18,7 @@ const upload = multer({
   }
 })
 
-router.post('/', signupController.registerUser);
-router.post('/emailcheck', upload.array('image', 1), signupController.checkEmail);
+router.post('/', upload.array('image', 1), signupController.registerUser);
+router.post('/emailcheck', signupController.checkEmail);
 
 module.exports = router;

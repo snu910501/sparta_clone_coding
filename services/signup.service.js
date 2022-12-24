@@ -24,6 +24,7 @@ class SignupService {
 
   registerUser = async (email, nickname, password, passwordConfirm) => {
     try {
+
       //이메일, 비번 검사하는 단계
       let signupValidateResult = await signupValidate(email, password, passwordConfirm);
 

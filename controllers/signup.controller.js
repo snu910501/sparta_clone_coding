@@ -22,9 +22,10 @@ class SignupController {
 
   registerUser = async (req, res, next) => {
     // 이메일 중복검사 했나 안했나 확인하는 변수 emailValidate. true여야 다음 로직 실행
-
+    console.log(req.body.email, req.body.password, req.body.nickname, req.body.emailValidate)
     try {
-      const { email, nickname, password, passwordConfirm, emailValidate } = JSON.parse(req.body);
+      const { email, nickname, password, passwordConfirm, emailValidate } = req.body;
+
       if (emailValidate == true) {
         await this.signupService.registerUser(email, nickname, password, passwordConfirm);
         return res.status(200).json({ message: '회원가입 성공' })
