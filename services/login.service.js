@@ -2,10 +2,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 const LoginRepository = require('../repositories/login.repository');
+const SignupRepository = require('../repositories/signup.repository');
 const ErrorMiddleware = require('../middlewares/errorMiddleware');
 
 class LoginService {
   loginRepository = new LoginRepository();
+  signupRepository = new SignupRepository();
 
   login = async (email, password) => {
     try {
@@ -44,6 +46,32 @@ class LoginService {
 
     } catch (err) {
       throw err
+    };
+  };
+
+  kakaoLogin = async (email, id, nickname) => {
+    try {
+      let userExist = await this.LoginService.login(email)
+      if (userExist) {
+        const token = jwt.sign(
+          {
+            userId: user.userId,
+            email: user.email,
+            nickname: user.nickname,
+          },
+          process.env.SECRET_KEY,
+          { expiresIn: '1h' }
+        );
+
+        return token
+      } else {
+        const user = await this.signupRepository.registerKakaoUser(email, id, nickname)
+        return user;
+      }
+    } catch (err) {
+      console.log('loginService kakaoLogin Error', err)
+      throw err
+
     }
   }
 }

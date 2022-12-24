@@ -17,16 +17,31 @@ class SignupRepository {
 
   registerUser = async (email, nickname, hashedPassword) => {
     try {
-      console.log('zz')
       let user = await User.create({
         email: email,
         nickname: nickname,
         password: hashedPassword
       })
-      console.log('user', user)
+
       return user;
     } catch (err) {
-      console.log('signupRepository-registerUser 에러')
+      console.log('signupRepository-registerUser 에러', err)
+      throw err;
+    }
+  }
+
+  registerKakaoUser = async (email, id, nickname) => {
+    try {
+      let user = await User.create({
+        email: email,
+        nickname: nickname,
+        snsId: id,
+        provider: 'kakao',
+      })
+
+      return user;
+    } catch (err) {
+      console.log('signupRepository-registerKakaoUser 에러', err)
       throw err;
     }
   }
