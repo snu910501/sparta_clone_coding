@@ -21,9 +21,9 @@ const upload = multer({
   },
 });
 
-// router.get('/', postController.findAllPost);
+router.get("/", postController.findAllPost);
 router.post("/", upload.single("video"), postController.createPost);
-// router.get('/:postId', postController.findPost);
+router.get("/:postId", postController.findPost);
 // router.put('/:postId', authMiddleware, upload.array('images', 5), postController.updatePost);
 // router.delete('/:postId', authMiddleware, postController.deletePost);
 

@@ -16,6 +16,25 @@ class PostController {
       throw err;
     }
   };
+
+  findAllPost = async (req, res) => {
+    try {
+      const allPosts = await this.postService.findAllPost();
+      res.status(200).json({ posts: allPosts });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  findPost = async (req, res) => {
+    try {
+      const postId = req.params.postId;
+      const post = await this.postService.findPost(postId);
+      res.status(200).json({ post: post });
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = PostController;

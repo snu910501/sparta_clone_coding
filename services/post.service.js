@@ -22,6 +22,29 @@ class PostService {
       throw err;
     }
   };
+
+  findAllPost = async () => {
+    try {
+      const allPosts = await this.postRepository.findAllPost();
+      return allPosts;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  findPost = async (postId) => {
+    try {
+      if (postId == "undefined" || postId == "[object Object]") {
+        const errorMiddleware = new ErrorMiddleware(
+          401,
+          ` ${postId} undefined 들어왔음`
+        );
+        throw errorMiddleware;
+      }
+      const post = await this.postRepository.findPost(postId);
+      return post;
+    } catch (err) {}
+  };
 }
 
 module.exports = PostService;
