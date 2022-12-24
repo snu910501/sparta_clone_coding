@@ -32,6 +32,7 @@ class LoginService {
               userId: user.userId,
               email: user.email,
               nickname: user.nickname,
+              provider: 'local',
             },
             process.env.SECRET_KEY,
             { expiresIn: '1h' }

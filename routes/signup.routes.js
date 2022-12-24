@@ -6,5 +6,6 @@ const signupController = new SignupController();
 
 router.post('/', signupController.registerUser);
 router.post('/emailcheck', signupController.checkEmail);
+router.post('/kakao', signupController.registerKakaoUser)
 
 module.exports = router;
