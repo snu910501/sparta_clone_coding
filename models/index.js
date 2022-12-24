@@ -15,7 +15,6 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 
-
 // 여기에다가 db객체에 모델들을 넣어주세요.
 db.User = User;
 
