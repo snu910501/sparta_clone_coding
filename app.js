@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
+const jwt = require('jsonwebtoken');
 
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
