@@ -30,6 +30,7 @@ class LoginController {
 
       return res.status(200).json({ result: true, token: Token })
     } catch (err) {
+      console.log('loginController kakaoLogin error');
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage })
       } else {
