@@ -12,6 +12,7 @@ class RtcExchangerService {
 
     this.onOffer = this.onOffer.bind(this);
     this.onAnswer = this.onAnswer.bind(this);
+    this.onCandidate = this.onCandidate.bind(this);
     //#endregion
   }
 
@@ -27,6 +28,7 @@ class RtcExchangerService {
     //#region WebRTC Signalling Events
     socket.on("offer", (params) => this.onOffer(socket, params));
     socket.on("answer", (params) => this.onAnswer(socket, params));
+    socket.on("candidate", (params) => this.onCandidate(socket, params));
     //#endregion
   }
 
@@ -71,6 +73,10 @@ class RtcExchangerService {
 
   onAnswer(socket, { channelName, sessionDescriptor }) {
     socket.broadcast.to(channelName).emit("receiveAnswer", sessionDescriptor);
+  }
+
+  onCandidate(socket, { channelName, candidate }) {
+    socket.broadcast.to(channelName).emit("receiveCandidate", candidate);
   }
   //#endregion
 }
