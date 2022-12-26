@@ -95,7 +95,7 @@ class LoginService {
             email: user.email,
             nickname: user.nickname,
           },
-          process.env.SECRET,
+          process.env.SECRET_KEY,
           {
             expiresIn: '1d', //유효기간
           },)
@@ -112,7 +112,7 @@ class LoginService {
           nickname: userExist.nickname,
           email: userExist.email,
         },
-          process.env.SECRET,
+          process.env.SECRET_KEY,
           {
             expiresIn: '1d', //유효기간
           },)
