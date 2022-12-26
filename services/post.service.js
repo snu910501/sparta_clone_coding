@@ -88,6 +88,15 @@ class PostService {
       throw err;
     }
   };
+
+  addView = async (postId) => {
+    try {
+      const addView = await this.postRepository.addView(postId);
+      return addView;
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = PostService;
