@@ -73,9 +73,9 @@ class LoginService {
           Authorization: `Bearer ${kakaoAccessToken}`,
         },
       });
-
+      console.log('kakaOUser알아보자', kakaoUser);
       let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
-      console.log('userExist', userExist);
+
       if (userExist == null) {
         console.log('kakaoUser', kakaoUser.id, kakaoUser.properties.nickname, kakaoUser.kakao_account.email,)
         let user = await this.signupRepository.registerKakaoUser({
