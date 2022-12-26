@@ -5,7 +5,6 @@ require('dotenv').config();
 const LoginRepository = require('../repositories/login.repository');
 const SignupRepository = require('../repositories/signup.repository');
 const ErrorMiddleware = require('../middlewares/errorMiddleware');
-const { generateToken } = require("../middlewares/generateToken");
 
 class LoginService {
   loginRepository = new LoginRepository();
@@ -84,16 +83,34 @@ class LoginService {
           nickname: kakaoUser.properties.nickname,
           email: kakaoUser.kakao_account.email,
         })
-        const accessToken = await generateToken(user);
+        const token = jwt.sign({
+          snsId: user.snsId,
+          email: user.email,
+          nickname: user.nickname,
+        },
+          process.env.SECRET,
+          {
+            expiresIn: '1d', //유효기간
+          },)
+
         return {
           result: true,
-          token: accessToken,
+          token: token,
         };
       } else {
-        const accessToken = await generateToken(user);
+        const token = jwt.sign({
+          snsId: user.snsId,
+          email: user.email,
+          nickname: user.nickname,
+        },
+          process.env.SECRET,
+          {
+            expiresIn: '1d', //유효기간
+          },)
+
         return {
           result: true,
-          token: accessToken,
+          token: token,
         };
       }
 
