@@ -19,7 +19,6 @@ class PostController {
   findAllPost = async (req, res) => {
     try {
       const lastId = req.query.lastId;
-      console.log(lastId);
       const allPosts = await this.postService.findAllPost(lastId);
       return res.status(200).json({ posts: allPosts });
     } catch (err) {
