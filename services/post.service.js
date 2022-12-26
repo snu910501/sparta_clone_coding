@@ -43,6 +43,36 @@ class PostService {
     }
   };
 
+  searchKeyword = async (keyword) => {
+    try {
+      if (!keyword) throw new ErrorMiddleware(406, "검색어 없음");
+      const posts = await this.postRepository.searchKeyword(keyword);
+      posts.map((post) => {
+        post.createdAt = dateCalculator(post.createdAt);
+        return post;
+      });
+
+      return posts;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  searchTag = async (tag) => {
+    try {
+      if (!tag) throw new ErrorMiddleware(406, "태그 없음");
+      const posts = await this.postRepository.searchTag(tag);
+      posts.map((post) => {
+        post.createdAt = dateCalculator(post.createdAt);
+        return post;
+      });
+
+      return posts;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   findPost = async (postId) => {
     try {
       if (postId == "undefined" || postId == "[object Object]") {

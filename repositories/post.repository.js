@@ -59,6 +59,66 @@ class PostRepository {
     }
   };
 
+  searchKeyword = async (keyword) => {
+    try {
+      const posts = await Post.findAll({
+        where: {
+          [Op.or]: [
+            { title: { [Op.like]: `%${keyword}%` } },
+            { content: { [Op.like]: `%${keyword}%` } },
+          ],
+        },
+        limit: 16,
+        attributes: [
+          "postId",
+          "title",
+          "content",
+          "thumbnail",
+          // "compVid",
+          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          [Sequelize.col("User.nickname"), "nickname"],
+          "createdAt",
+          "view",
+        ],
+        include: [{ model: User, attributes: [] }],
+        group: "postId",
+        order: [["createdAt", "DESC"]],
+        raw: true,
+      });
+
+      return posts;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  searchTag = async (tag) => {
+    try {
+      const posts = await Post.findAll({
+        where: { tag: { [Op.like]: `%${tag}%` } },
+        limit: 16,
+        attributes: [
+          "postId",
+          "title",
+          "thumbnail",
+          // "compVid",
+          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          [Sequelize.col("User.nickname"), "nickname"],
+          "createdAt",
+          "view",
+        ],
+        include: [{ model: User, attributes: [] }],
+        group: "postId",
+        order: [["createdAt", "DESC"]],
+        raw: true,
+      });
+
+      return posts;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   findPost = async (postId) => {
     try {
       const post = await Post.findOne({
