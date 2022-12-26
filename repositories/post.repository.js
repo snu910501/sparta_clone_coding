@@ -36,7 +36,7 @@ class PostRepository {
 
       const allPosts = await Post.findAll({
         where,
-        limit: 15,
+        limit: 16,
         attributes: [
           "postId",
           "title",
