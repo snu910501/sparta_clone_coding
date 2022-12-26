@@ -32,9 +32,9 @@ class SignupRepository {
     try {
       console.log('zzdfz', snsId, nickname, email)
       let user = await User.create({
-        snsId: snsId.snsId,
-        nickname: snsId.nickname,
-        email: snsId.email,
+        snsId: snsId,
+        nickname: nickname,
+        email: email,
         provider: 'kakao',
       })
       console.log('zizi', user);

@@ -82,12 +82,12 @@ class LoginService {
       let userExist = await this.loginRepository.findKakaoUser(snsId);
 
       if (userExist == null) {
-        console.log('kakaoUser', snsId, nickname, email,)
-        let user = await this.signupRepository.registerKakaoUser({
-          snsId: snsId,
-          nickname: nickname,
-          email: email
-        })
+        console.log('kakaoUser', snsId, nickname, email, 'hihi')
+        let user = await this.signupRepository.registerKakaoUser(
+          snsId,
+          nickname,
+          email,
+        );
         console.log('userzz', user);
         const token = jwt.sign({
           snsId: user.snsId,
