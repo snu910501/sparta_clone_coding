@@ -33,7 +33,7 @@ class SignupRepository {
       let user = await User.create({
         email: email,
         nickname: nickname,
-        snsId: id,
+        snsId: snsId,
         provider: 'kakao',
       })
 
