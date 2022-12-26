@@ -1,7 +1,9 @@
+
+
 const LoginService = require('../services/login.service');
 
 class LoginController {
-  loginController = new LoginService();
+  loginService = new LoginService();
 
   login = async (req, res, next) => {
     try {
@@ -21,11 +23,19 @@ class LoginController {
 
   kakaoLogin = async (req, res, next) => {
     try {
-      const { id, nickname, email } = req.body;
-      let Token = await this.loginController.login(email, id, nickname);
-      return res.status(200).json({ result: true, token: Token })
+      const { code } = req.query
+
+
+      let result = await this.loginService.kakaoLogin(code);
+
+      return res.status(200).json({ result: result.result, token: result.token })
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage })
+      console.log('loginController kakaoLogin error');
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage })
+      } else {
+        return res.status(500).json({ errorMessage: 'error' })
+      }
     }
   }
 }
