@@ -39,6 +39,18 @@ class PostController {
         await this.postService.addView(postId);
       }
 
+      // if (req.headers["view-cookie"] == undefined) {
+
+      //   res.setHeader(
+      //     "view-cookie",
+      //     `${postId}=${getUserIP(req)}; Max-Age=${
+      //       24 * 60 * 60 * 1000
+      //     }, ${}`
+      //   );
+
+      //   await this.postService.addView(postId);
+      // }
+
       const post = await this.postService.findPost(postId);
 
       return res.status(200).json({ post: post });

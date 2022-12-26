@@ -3,6 +3,7 @@ const CommentRepository = require("../repositories/comment.repository");
 const uploadVidToS3 = require("../middlewares/uploadVidToS3");
 const uploadImageToS3 = require("../middlewares/uploadImageToS3");
 const ErrorMiddleware = require("../middlewares/errorMiddleware");
+const dateCalculator = require("../middlewares/dateCalculator");
 
 class PostService {
   postRepository = new PostRepository();
@@ -31,6 +32,11 @@ class PostService {
   findAllPost = async (lastId) => {
     try {
       const allPosts = await this.postRepository.findAllPost(lastId);
+      allPosts.map((post) => {
+        post.createdAt = dateCalculator(post.createdAt);
+        return post;
+      });
+
       return allPosts;
     } catch (err) {
       throw err;
@@ -45,8 +51,19 @@ class PostService {
       const post = await this.postRepository.findPost(postId);
       if (!post) throw new ErrorMiddleware(404, "영상 없음");
 
+      // 날짜 YYYY. MM. DD. 로 변환
+      const date = post.updatedAt;
+      post.updatedAt = date.toLocaleDateString();
+
+      // 댓글 작성 날짜 ~~전으로 변경
       const comments = await this.cmtRepository.findAllComments(postId);
-      const result = { ...post.dataValues, comments: comments };
+      comments.map((comment) => {
+        comment.createdAt = dateCalculator(comment.createdAt);
+        return comment;
+      });
+
+      // 결과 합치기
+      const result = { ...post, comments: comments };
 
       return result;
     } catch (err) {

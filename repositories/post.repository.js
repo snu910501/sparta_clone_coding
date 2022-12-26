@@ -50,6 +50,7 @@ class PostRepository {
         include: [{ model: User, attributes: [] }],
         group: "postId",
         order: [["createdAt", "DESC"]],
+        raw: true,
       });
 
       return allPosts;
@@ -75,6 +76,7 @@ class PostRepository {
           "updatedAt",
         ],
         include: [{ model: User, attributes: [] }],
+        raw: true,
       });
       return post;
     } catch (err) {
