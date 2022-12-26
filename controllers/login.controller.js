@@ -3,7 +3,7 @@
 const LoginService = require('../services/login.service');
 
 class LoginController {
-  loginController = new LoginService();
+  loginService = new LoginService();
 
   login = async (req, res, next) => {
     try {
@@ -34,7 +34,7 @@ class LoginController {
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage })
       } else {
-        return res.status(500).json({ errorMessage: err })
+        return res.status(500).json({ errorMessage: 'error' })
       }
     }
   }
