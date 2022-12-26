@@ -22,7 +22,7 @@ class LoginController {
   kakaoLogin = async (req, res, next) => {
     try {
       const code = req.body.code
-      console.log(code);
+      console.log('codezz', code);
       const {
         data: { access_token: kakaoAccessToken },
       } = await axios('https://kauth.kakao.com/oauth/token', {
@@ -37,7 +37,11 @@ class LoginController {
       console.log(data)
       return res.status(200).json({ result: true, token: Token })
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage })
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage })
+      } else {
+        return res.status(500).json({ errorMessage: err })
+      }
     }
   }
 }
