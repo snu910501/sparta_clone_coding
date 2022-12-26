@@ -73,15 +73,20 @@ class LoginService {
           Authorization: `Bearer ${kakaoAccessToken}`,
         },
       });
-      console.log('kakaOUser알아보자', kakaoUser);
-      let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
+
+      let snsId = kakaoUser.id
+      let nickname = kakaoUser.properties.nickname;
+      let email = kakaoUser.kakao_account.email;
+
+
+      let userExist = await this.loginRepository.findKakaoUser(snsId);
 
       if (userExist == null) {
-        console.log('kakaoUser', kakaoUser.id, kakaoUser.properties.nickname, kakaoUser.kakao_account.email,)
+        console.log('kakaoUser', snsId, nickname, email,)
         let user = await this.signupRepository.registerKakaoUser({
-          snsId: kakaoUser.id,
-          nickname: kakaoUser.properties.nickname,
-          email: kakaoUser.kakao_account.email,
+          snsId: snsId,
+          nickname: nickname,
+          email: email
         })
 
         const token = jwt.sign({
