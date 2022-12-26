@@ -81,16 +81,16 @@ class LoginService {
           provider: 'kakao',
         })
         const accessToken = await generateToken(user);
-        res.status(200).json({
+        return {
           result: true,
           token: accessToken,
-        });
+        };
       } else {
         const accessToken = await generateToken(user);
-        res.status(200).json({
+        return {
           result: true,
           token: accessToken,
-        });
+        };
       }
 
     } catch (err) {
