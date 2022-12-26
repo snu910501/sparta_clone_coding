@@ -38,7 +38,7 @@ class LoginService {
             process.env.SECRET_KEY,
             { expiresIn: '1h' }
           );
-
+          console.log('kkk', token);
           return token
         }
       } else {
@@ -68,7 +68,6 @@ class LoginService {
         //   'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         // }
       }); //액세스 토큰을 받아온다
-      console.log('여기는?');
       const { data: kakaoUser } = await axios('https://kapi.kakao.com/v2/user/me', {
         headers: {
           Authorization: `Bearer ${kakaoAccessToken}`,
@@ -92,7 +91,7 @@ class LoginService {
           {
             expiresIn: '1d', //유효기간
           },)
-
+        console.log('kkk', token);
         return {
           result: true,
           token: token,
@@ -107,7 +106,7 @@ class LoginService {
           {
             expiresIn: '1d', //유효기간
           },)
-
+        console.log('kkk', token);
         return {
           result: true,
           token: token,
