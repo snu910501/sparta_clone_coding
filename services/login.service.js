@@ -53,7 +53,7 @@ class LoginService {
 
   kakaoLogin = async (code) => {
     try {
-
+      console.log('zzz', process.env.KAKAO_REST_API_KEY, process.env.KAKAO_REDIRECT_URI)
       const {
         data: { access_token: kakaoAccessToken },
       } = await axios('https://kauth.kakao.com/oauth/token', {
