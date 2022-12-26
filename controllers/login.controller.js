@@ -26,7 +26,7 @@ class LoginController {
       const code = req.body.code
       console.log('codezz', code);
 
-      await this.LoginService.kakaoLogin(code);
+      await this.loginService.kakaoLogin(code);
 
       return res.status(200).json({ result: true, token: Token })
     } catch (err) {
