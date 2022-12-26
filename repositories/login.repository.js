@@ -18,7 +18,7 @@ class LoginRepository {
 
   findKakaoUser = async (snsId) => {
     try {
-      console.log('findkakaoUser 되냐?');
+      console.log('findkakaoUser 되냐?', snsId);
       let userExist = await User.findOne({
         where: {
           snsId: snsId
