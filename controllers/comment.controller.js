@@ -12,7 +12,11 @@ class CommentController {
       await this.cmtService.createComment(comment, postId, userId);
       return res.status(200).json({ message: "댓글 업로드 성공" });
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage });
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage });
+      } else {
+        return res.status(500).json({ errorMessage: "error" });
+      }
     }
   };
 
@@ -26,7 +30,11 @@ class CommentController {
       await this.cmtService.updateComment(userId, postId, commentId, comment);
       return res.status(200).json({ message: "댓글 수정 성공" });
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage });
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage });
+      } else {
+        return res.status(500).json({ errorMessage: "error" });
+      }
     }
   };
 
@@ -39,7 +47,11 @@ class CommentController {
       await this.cmtService.deleteComment(userId, postId, commentId);
       return res.status(200).json({ message: "댓글 삭제 성공" });
     } catch (err) {
-      return res.status(err.status).json({ errorMessage: err.errorMessage });
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage });
+      } else {
+        return res.status(500).json({ errorMessage: "error" });
+      }
     }
   };
 }
