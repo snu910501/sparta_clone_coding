@@ -75,7 +75,9 @@ class LoginService {
       });
 
       let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
+      console.log('userExist', userExist);
       if (!userExist) {
+        console.log('kzkz', user.snsId, user.email, user.nickname)
         let user = await this.signupRepository.registerKakaoUser({
           snsId: kakaoUser.id,
           nickname: kakaoUser.properties.nickname,
@@ -96,11 +98,11 @@ class LoginService {
           token: token,
         };
       } else {
-        console.log('kzkz', user.snsId, user.email, user.nickname)
+
         const token = jwt.sign({
-          snsId: user.snsId,
-          email: user.email,
-          nickname: user.nickname,
+          snsId: kakaoUser.id,
+          nickname: kakaoUser.properties.nickname,
+          email: kakaoUser.kakao_account.email,
         },
           process.env.SECRET,
           {
