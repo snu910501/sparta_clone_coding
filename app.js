@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(function (req, res, next) {
-  console.log(req.headers.authorization);
+  console.log(req.headers);
   next();
 })
 
