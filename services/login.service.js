@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 const LoginRepository = require('../repositories/login.repository');
