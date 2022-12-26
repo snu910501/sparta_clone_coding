@@ -47,6 +47,7 @@ class LoginService {
       }
 
     } catch (err) {
+      console.log('loginService login error');
       throw err
     };
   };
@@ -79,7 +80,7 @@ class LoginService {
       let email = kakaoUser.kakao_account.email;
 
 
-      let userExist = await this.loginRepository.findKakaoUser(snsId);
+      let userExist = await this.loginRepository.findKakaoUser(email);
 
       if (userExist == null) {
         console.log('kakaoUser', snsId, nickname, email, 'hihi')
@@ -88,7 +89,7 @@ class LoginService {
           nickname,
           email,
         );
-        console.log('userzz', user);
+
         const token = jwt.sign(
           {
             snsId: user.snsId,
@@ -100,7 +101,7 @@ class LoginService {
             expiresIn: '1d', //유효기간
           },)
 
-        console.log('token', token)
+
         return {
           result: true,
           token: token,
@@ -116,7 +117,7 @@ class LoginService {
           {
             expiresIn: '1d', //유효기간
           },)
-        console.log('kkk', token);
+
         return {
           result: true,
           token: token,
