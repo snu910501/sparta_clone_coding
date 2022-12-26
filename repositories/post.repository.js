@@ -1,5 +1,5 @@
 const { Post, User } = require("../models/");
-const Sequelize = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 
 class PostRepository {
   createPost = async (
@@ -27,9 +27,16 @@ class PostRepository {
     }
   };
 
-  findAllPost = async () => {
+  findAllPost = async (lastId) => {
     try {
+      const where = {};
+      if (parseInt(lastId, 10)) {
+        where.postId = { [Op.lt]: lastId };
+      }
+
       const allPosts = await Post.findAll({
+        where,
+        limit: 15,
         attributes: [
           "postId",
           "title",

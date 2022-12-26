@@ -28,9 +28,9 @@ class PostService {
     }
   };
 
-  findAllPost = async () => {
+  findAllPost = async (lastId) => {
     try {
-      const allPosts = await this.postRepository.findAllPost();
+      const allPosts = await this.postRepository.findAllPost(lastId);
       return allPosts;
     } catch (err) {
       throw err;
