@@ -6,6 +6,6 @@ const loginController = new LoginController()
 
 
 router.post('/', loginController.login)
-router.post('/kakao', loginController.kakaoLogin);
+router.get('/kakao', loginController.kakaoLogin);
 
 module.exports = router;
