@@ -76,7 +76,7 @@ class LoginService {
       });
 
       let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
-      console.log('뭔가', kakaoUser.id)
+      console.log('뭔가', typeof kakaoUser.id)
       if (!userExist) {
         let user = await this.signupRepository.registerKakaoUser({
           snsId: kakaoUser.id,

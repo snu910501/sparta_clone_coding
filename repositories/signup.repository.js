@@ -37,7 +37,7 @@ class SignupRepository {
         email: email,
         provider: 'kakao',
       })
-
+      console.log('zizi', user);
       return user;
     } catch (err) {
       console.log('signupRepository-registerKakaoUser 에러', err)

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const generateToken = (user) => {
+  console.log('토큰은?');
   return new Promise((resolve, reject) => {
     jwt.sign(
       {
