@@ -6,7 +6,6 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const jwtVerify = async (req, res, next) => {
   const { authorization } = req.headers;
   const [authType, authToken] = (authorization || '').split(' ');
-  console.log(req.header);
   if (!authToken || authType !== 'Bearer') {
     res.status(401).send({
       errorMessage: '로그인 후 이용 가능한 기능입니다1',

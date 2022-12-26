@@ -47,6 +47,7 @@ class LoginService {
       }
 
     } catch (err) {
+      console.log('loginService login error');
       throw err
     };
   };
@@ -88,7 +89,7 @@ class LoginService {
           nickname,
           email,
         );
-        console.log('userzz', user);
+
         const token = jwt.sign(
           {
             snsId: user.snsId,
@@ -100,13 +101,13 @@ class LoginService {
             expiresIn: '1d', //유효기간
           },)
 
-        console.log('token', token)
+
         return {
           result: true,
           token: token,
         };
       } else {
-        console.log(userExist);
+
         const token = jwt.sign({
           snsId: userExist.snsId,
           nickname: userExist.nickname,
@@ -116,7 +117,7 @@ class LoginService {
           {
             expiresIn: '1d', //유효기간
           },)
-        console.log('kkk', token);
+
         return {
           result: true,
           token: token,

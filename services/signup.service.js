@@ -20,7 +20,7 @@ class SignupService {
         return true;
       }
     } catch (err) {
-      console.log('hi');
+
       throw err
     }
   };

@@ -16,7 +16,6 @@ class SignupController {
         return res.status(502).json({ errorMessage: '가입 불가능한 이메일입니다.' })
       }
     } catch (err) {
-      console.log('zz', err);
       console.log(err.status, err.errorMessage);
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage })

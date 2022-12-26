@@ -32,6 +32,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use(function (req, res, next) {
+  console.log(res.headers);
+  next();
+})
+
 app.use("/", indexRouter);
 
 app.listen(app.get("port"), () => {

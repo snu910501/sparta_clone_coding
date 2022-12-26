@@ -5,7 +5,7 @@ module.exports = class User extends Sequelize.Model {
     return super.init(
       {
         userId: {
-          allowNull: true,
+          allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER,
