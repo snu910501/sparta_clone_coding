@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 const authMiddleware = require("./middlewares/authMiddleware");
+const User = require('./models/user')
 
 const app = express();
 app.set("port", process.env.NODE_ENV || "3000");
