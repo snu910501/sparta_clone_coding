@@ -5,6 +5,7 @@ require('dotenv').config();
 const LoginRepository = require('../repositories/login.repository');
 const SignupRepository = require('../repositories/signup.repository');
 const ErrorMiddleware = require('../middlewares/errorMiddleware');
+const generateToken = require("../middlewares/generateToken");
 
 class LoginService {
   loginRepository = new LoginRepository();
