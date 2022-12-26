@@ -38,7 +38,7 @@ class LoginService {
             process.env.SECRET_KEY,
             { expiresIn: '1h' }
           );
-          console.log('kkk', token);
+
           return token
         }
       } else {
@@ -53,7 +53,7 @@ class LoginService {
 
   kakaoLogin = async (code) => {
     try {
-      console.log('zzz', process.env.KAKAO_REST_API_KEY, process.env.KAKAO_REDIRECT_URI)
+
       const {
         data: { access_token: kakaoAccessToken },
       } = await axios('https://kauth.kakao.com/oauth/token', {
@@ -75,13 +75,13 @@ class LoginService {
       });
 
       let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
-      console.log('뭔가', typeof kakaoUser.id)
       if (!userExist) {
         let user = await this.signupRepository.registerKakaoUser({
           snsId: kakaoUser.id,
           nickname: kakaoUser.properties.nickname,
           email: kakaoUser.kakao_account.email,
         })
+
         const token = jwt.sign({
           snsId: user.snsId,
           email: user.email,
@@ -91,12 +91,12 @@ class LoginService {
           {
             expiresIn: '1d', //유효기간
           },)
-        console.log('kkk', token);
         return {
           result: true,
           token: token,
         };
       } else {
+        console.log('kzkz', user.snsId, user.email, user.nickname)
         const token = jwt.sign({
           snsId: user.snsId,
           email: user.email,
