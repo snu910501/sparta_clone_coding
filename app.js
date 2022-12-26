@@ -1,10 +1,14 @@
-require('./db');
+require("./db");
 
-const { appServer } = require('./server');
-const { RtcExchangerController, SocketStreamMapper, SocketUserMapper } = require('./controllers/rtc-exchanger');
+const { appServer } = require("./server");
+const { RtcExchangerController } = require("./controllers/rtc-exchanger");
+const {
+  RtcExchangerService,
+  SocketStreamMapper,
+  SocketUserMapper,
+} = require("./services/rtc-exchanger");
 
 new RtcExchangerController(
   appServer,
-  new SocketStreamMapper(),
-  new SocketUserMapper(),
+  new RtcExchangerService(new SocketStreamMapper(), new SocketUserMapper())
 );
