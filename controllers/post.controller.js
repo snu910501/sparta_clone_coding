@@ -29,6 +29,7 @@ class PostController {
     try {
       const postId = req.params.postId;
       const post = await this.postService.findPost(postId);
+
       return res.status(200).json({ post: post });
     } catch (err) {
       return res.status(err.status).json({ errorMessage: err.errorMessage });

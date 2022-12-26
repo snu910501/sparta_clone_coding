@@ -1,15 +1,17 @@
 const PostRepository = require("../repositories/post.repository");
+const CommentRepository = require("../repositories/comment.repository");
 const uploadVidToS3 = require("../middlewares/uploadVidToS3");
 const uploadImageToS3 = require("../middlewares/uploadImageToS3");
 const ErrorMiddleware = require("../middlewares/errorMiddleware");
 
 class PostService {
   postRepository = new PostRepository();
+  cmtRepository = new CommentRepository();
 
   createPost = async (title, content, tag, vid, userId) => {
     try {
       if (!title || !content || !vid)
-        throw new ErrorMiddleware(404, "제목 내용 또는 영상 없음");
+        throw new ErrorMiddleware(406, "제목 내용 또는 영상 없음");
 
       const origVid = await uploadVidToS3(vid);
       const create = await this.postRepository.createPost(
@@ -43,7 +45,10 @@ class PostService {
       const post = await this.postRepository.findPost(postId);
       if (!post) throw new ErrorMiddleware(404, "영상 없음");
 
-      return post;
+      const comments = await this.cmtRepository.findAllComments(postId);
+      const result = { ...post.dataValues, comments: comments };
+
+      return result;
     } catch (err) {
       throw err;
     }
