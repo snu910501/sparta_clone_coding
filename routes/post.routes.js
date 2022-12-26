@@ -29,6 +29,8 @@ router.post(
   postController.createPost
 );
 router.get("/:postId", postController.findPost);
+router.get("/search", postController.searchKeyword);
+router.get("/search", postController.searchTag);
 router.patch("/:postId", authMiddleware, postController.updatePost);
 router.delete("/:postId", authMiddleware, postController.deletePost);
 

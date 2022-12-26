@@ -26,27 +26,51 @@ class PostController {
     }
   };
 
-  findPost = async (req, res) => {
+  findPost = async (req, res, next) => {
     try {
       const postId = req.params.postId;
+      if (postId === "search") next();
+      else {
+        let ip = {};
+        let maxAge = 0;
+        // 조회수 +1은 postId+IP 주소 쿠키 존재 여부로 확인
+        if (req.cookies[postId] == undefined) {
+          // res.json(postId, getUserIP(req), {
+          //   maxAge: 24 * 60 * 60 * 1000,
+          // });
+          ip = getUserIP(req);
+          maxAge = 24 * 60 * 60 * 1000;
+          await this.postService.addView(postId);
+        }
 
-      let ip = {};
-      let maxAge = 0;
-      // 조회수 +1은 postId+IP 주소 쿠키 존재 여부로 확인
-      if (req.cookies[postId] == undefined) {
-        // res.json(postId, getUserIP(req), {
-        //   maxAge: 24 * 60 * 60 * 1000,
-        // });
-        ip = getUserIP(req);
-        maxAge = 24 * 60 * 60 * 1000;
-        await this.postService.addView(postId);
+        const post = await this.postService.findPost(postId);
+        return res.status(200).json({ post: post, cookie, maxAge });
       }
+    } catch (err) {
+      return res.status(err.status).json({ errorMessage: err.errorMessage });
+    }
+  };
 
-      const post = await this.postService.findPost(postId);
-
-      return res.status(200).json({ post: post, cookie, maxAge });
+  searchKeyword = async (req, res, next) => {
+    try {
+      const keyword = req.query.keyword;
+      if (req.query.tag) next();
+      else {
+        const posts = await this.postService.searchKeyword(keyword);
+        return res.status(200).json({ posts: posts });
+      }
     } catch (err) {
       console.log(err);
+      return res.status(err.status).json({ errorMessage: err.errorMessage });
+    }
+  };
+
+  searchTag = async (req, res, next) => {
+    try {
+      const tag = req.query.tag;
+      const posts = await this.postService.searchTag(tag);
+      return res.status(200).json({ posts: posts });
+    } catch (err) {
       return res.status(err.status).json({ errorMessage: err.errorMessage });
     }
   };
