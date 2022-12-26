@@ -64,7 +64,7 @@ class LoginService {
           code: code,
         },
       }); //액세스 토큰을 받아온다
-
+      console.log('여기는?');
       const { data: kakaoUser } = await axios('https://kapi.kakao.com/v2/user/me', {
         headers: {
           Authorization: `Bearer ${kakaoAccessToken}`,
