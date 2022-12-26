@@ -88,7 +88,7 @@ class LoginService {
           nickname: nickname,
           email: email
         })
-
+        console.log('userzz', user);
         const token = jwt.sign({
           snsId: user.snsId,
           email: user.email,
