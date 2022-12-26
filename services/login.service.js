@@ -89,11 +89,12 @@ class LoginService {
           email,
         );
         console.log('userzz', user);
-        const token = jwt.sign({
-          snsId: user.snsId,
-          email: user.email,
-          nickname: user.nickname,
-        },
+        const token = jwt.sign(
+          {
+            snsId: user.snsId,
+            email: user.email,
+            nickname: user.nickname,
+          },
           process.env.SECRET,
           {
             expiresIn: '1d', //유효기간

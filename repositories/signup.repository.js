@@ -30,7 +30,7 @@ class SignupRepository {
 
   registerKakaoUser = async (snsId, nickname, email) => {
     try {
-      console.log('zzdfz', snsId, nickname, email)
+
       let user = await User.create({
         snsId: snsId,
         nickname: nickname,
