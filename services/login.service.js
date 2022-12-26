@@ -79,7 +79,7 @@ class LoginService {
       let email = kakaoUser.kakao_account.email;
 
 
-      let userExist = await this.loginRepository.findKakaoUser(snsId);
+      let userExist = await this.loginRepository.findKakaoUser(email);
 
       if (userExist == null) {
         console.log('kakaoUser', snsId, nickname, email, 'hihi')
