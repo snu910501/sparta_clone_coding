@@ -44,7 +44,7 @@ app.use('/auth', function (req, res, next) {
     });
     return;
   }
-  const { userId } = jwt.verify(authToken, SECRET_KEY);
+  const { userId } = jwt.verify(authToken, process.env.SECRET_KEY);
 
   User.findByPk(userId).then((user) => {
     const token = jwt.sign(
