@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use('/auth', function (req, res, next) {
   // 새로고침 마다 토큰 검사
   const { authorization } = req.headers;
-
+  console.log('autho', authorization);
   const [authType, authToken] = (authorization || '').split(' ');
   if (!authToken || authType !== 'Bearer') {
     res.status(401).send({
@@ -46,6 +46,8 @@ app.use('/auth', function (req, res, next) {
     });
     return;
   }
+
+  console.log('zhizhi');
   const { userId } = jwt.verify(authToken, process.env.SECRET_KEY);
 
   User.findByPk(userId).then((user) => {
