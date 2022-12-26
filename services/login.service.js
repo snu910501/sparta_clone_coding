@@ -76,8 +76,8 @@ class LoginService {
 
       let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
       console.log('userExist', userExist);
-      if (!userExist) {
-        console.log('kzkz', user.snsId, user.email, user.nickname)
+      if (userExist == null) {
+        console.log('kakaoUser', kakaoUser.id, kakaoUser.properties.nickname, kakaoUser.kakao_account.email,)
         let user = await this.signupRepository.registerKakaoUser({
           snsId: kakaoUser.id,
           nickname: kakaoUser.properties.nickname,
@@ -93,6 +93,8 @@ class LoginService {
           {
             expiresIn: '1d', //유효기간
           },)
+
+        console.log('token', token)
         return {
           result: true,
           token: token,
@@ -100,9 +102,9 @@ class LoginService {
       } else {
 
         const token = jwt.sign({
-          snsId: kakaoUser.id,
-          nickname: kakaoUser.properties.nickname,
-          email: kakaoUser.kakao_account.email,
+          snsId: userExist.snsId,
+          nickname: userExist.nickname,
+          email: userExist.email,
         },
           process.env.SECRET,
           {
