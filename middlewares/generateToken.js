@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const generateToken = (user) => {
+module.exports = generateToken = (user) => {
   console.log('토큰은?');
   return new Promise((resolve, reject) => {
     jwt.sign(
@@ -26,5 +26,3 @@ const generateToken = (user) => {
     );
   });
 };
-
-export { generateToken };
