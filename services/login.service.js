@@ -53,7 +53,7 @@ class LoginService {
 
   kakaoLogin = async (code) => {
     try {
-      console.log('kakaoLogin 되냐?');
+
       const {
         data: { access_token: kakaoAccessToken },
       } = await axios('https://kauth.kakao.com/oauth/token', {
