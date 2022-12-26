@@ -1,5 +1,5 @@
 const PostService = require("../services/post.service");
-const getUserIP = require("../middlewares/getUserIp");
+const getUserIP = require("../middlewares/getUserIP");
 class PostController {
   postService = new PostService();
 
