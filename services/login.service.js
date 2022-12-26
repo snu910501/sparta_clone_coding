@@ -78,11 +78,10 @@ class LoginService {
       let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
 
       if (!userExist) {
-        let user = await this.SignupRepository.registerKakaoUser({
+        let user = await this.signupRepository.registerKakaoUser({
           snsId: kakaoUser.id,
           nickname: kakaoUser.properties.nickname,
           email: kakaoUser.kakao_account.email,
-          provider: 'kakao',
         })
         const accessToken = await generateToken(user);
         return {
