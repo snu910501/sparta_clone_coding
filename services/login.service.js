@@ -56,15 +56,16 @@ class LoginService {
 
       const {
         data: { access_token: kakaoAccessToken },
-      } = await axios.post('https://kauth.kakao.com/oauth/token', {
+      } = await axios('https://kauth.kakao.com/oauth/token', {
         params: {
           grant_type: 'authorization_code',
           client_id: process.env.KAKAO_REST_API_KEY,
           redirect_uri: process.env.KAKAO_REDIRECT_URI + '?platform=kakao',
           code: code,
-        }, headers: {
-          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        }
+        },
+        // headers: {
+        //   'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        // }
       }); //액세스 토큰을 받아온다
       console.log('여기는?');
       const { data: kakaoUser } = await axios('https://kapi.kakao.com/v2/user/me', {

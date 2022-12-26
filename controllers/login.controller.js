@@ -23,7 +23,7 @@ class LoginController {
 
   kakaoLogin = async (req, res, next) => {
     try {
-      const code = req.body.code
+      const { code } = req.query
 
 
       let result = await this.loginService.kakaoLogin(code);
