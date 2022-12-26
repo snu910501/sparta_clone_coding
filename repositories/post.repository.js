@@ -102,6 +102,18 @@ class PostRepository {
       throw err;
     }
   };
+
+  addView = async (postId) => {
+    try {
+      const addView = await Post.update(
+        { view: Sequelize.literal("view + 1") },
+        { where: { postId: postId } }
+      );
+      return addView;
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = PostRepository;
