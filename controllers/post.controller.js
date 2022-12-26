@@ -38,7 +38,7 @@ class PostController {
   updatePost = async (req, res) => {
     try {
       const postId = req.params.postId;
-      const userId = res.locals.user;
+      const userId = res.locals.user.dataValues.userId;
       const { title, content, tag } = req.body;
 
       await this.postService.updatePost(userId, postId, title, content, tag);
@@ -51,7 +51,7 @@ class PostController {
   deletePost = async (req, res) => {
     try {
       const postId = req.params.postId;
-      const userId = res.locals.user;
+      const userId = res.locals.user.dataValues.userId;
 
       await this.postService.deletePost(userId, postId);
       return res.status(200).json({ message: "영상 삭제 성공" });
