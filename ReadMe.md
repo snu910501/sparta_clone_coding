@@ -37,7 +37,7 @@ Youtube clone coding
 
 # API 명세 및 프로젝트 관리 노션
 
-[1조 SA 노션](https://www.notion.so/soroya/4-SA-38741270d800477789b62cbbc807cb0b)
+[4조 SA 노션](https://www.notion.so/soroya/4-SA-38741270d800477789b62cbbc807cb0b)
 
 # 백엔드 협업 프로세스
 
