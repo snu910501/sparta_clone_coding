@@ -64,12 +64,36 @@ class PostRepository {
           "tag",
           "origVid",
           [Sequelize.col("User.nickname"), "nickname"],
+          [Sequelize.col("User.userId"), "userId"],
           "updatedAt",
         ],
         include: [{ model: User, attributes: [] }],
       });
       return post;
-    } catch (err) {}
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  updatePost = async (postId, title, content, tag) => {
+    try {
+      const post = await Post.update(
+        { title, content, tag },
+        { where: { postId: postId } }
+      );
+      return post;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  deletePost = async (postId) => {
+    try {
+      const post = await Post.destroy({ where: { postId: postId } });
+      return post;
+    } catch (err) {
+      throw err;
+    }
   };
 }
 
