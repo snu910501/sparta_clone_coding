@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const LoginService = require('../services/login.service');
 
 class LoginController {
@@ -23,18 +25,9 @@ class LoginController {
     try {
       const code = req.body.code
       console.log('codezz', code);
-      const {
-        data: { access_token: kakaoAccessToken },
-      } = await axios('https://kauth.kakao.com/oauth/token', {
-        params: {
-          grant_type: 'authorization_code',
-          client_id: process.env.KAKAO_REST_API_KEY,
-          redirect_uri: process.env.KAKAO_REDIRECT_URI + '?platform=kakao',
-          code: code,
-        },
-      }); //액세스 토큰을 받아온다
 
-      console.log(data)
+      await this.LoginService.kakaoLogin(code);
+
       return res.status(200).json({ result: true, token: Token })
     } catch (err) {
       if (err.status) {

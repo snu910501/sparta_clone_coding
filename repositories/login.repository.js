@@ -15,6 +15,21 @@ class LoginRepository {
       throw err
     }
   };
+
+  findKakaoUser = async (snsId) => {
+    try {
+      let userExist = await User.findOne({
+        where: {
+          snsId: snsId
+        }
+      })
+
+      return userExist;
+    } catch (err) {
+      console.log('LoginRepository findKakaoUser Error');
+      throw err
+    }
+  }
 }
 
 module.exports = LoginRepository

@@ -50,25 +50,48 @@ class LoginService {
     };
   };
 
-  kakaoLogin = async (email, id, nickname) => {
+  kakaoLogin = async (code) => {
     try {
-      let userExist = await this.LoginService.login(email)
-      if (userExist) {
-        const token = jwt.sign(
-          {
-            userId: user.userId,
-            email: user.email,
-            nickname: user.nickname,
-          },
-          process.env.SECRET_KEY,
-          { expiresIn: '1h' }
-        );
 
-        return token
+      const {
+        data: { access_token: kakaoAccessToken },
+      } = await axios('https://kauth.kakao.com/oauth/token', {
+        params: {
+          grant_type: 'authorization_code',
+          client_id: process.env.KAKAO_REST_API_KEY,
+          redirect_uri: process.env.KAKAO_REDIRECT_URI + '?platform=kakao',
+          code: code,
+        },
+      }); //액세스 토큰을 받아온다
+
+      const { data: kakaoUser } = await axios('https://kapi.kakao.com/v2/user/me', {
+        headers: {
+          Authorization: `Bearer ${kakaoAccessToken}`,
+        },
+      });
+
+      let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
+
+      if (!userExist) {
+        let user = await this.SignupRepository.registerKakaoUser({
+          snsId: kakaoUser.id,
+          nickname: kakaoUser.properties.nickname,
+          email: kakaoUser.kakao_account.email,
+          provider: 'kakao',
+        })
+        const accessToken = await generateToken(user);
+        res.status(200).json({
+          result: true,
+          token: accessToken,
+        });
       } else {
-        const user = await this.signupRepository.registerKakaoUser(email, id, nickname)
-        return user;
+        const accessToken = await generateToken(user);
+        res.status(200).json({
+          result: true,
+          token: accessToken,
+        });
       }
+
     } catch (err) {
       console.log('loginService kakaoLogin Error', err)
       throw err

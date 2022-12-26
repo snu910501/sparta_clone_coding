@@ -3,13 +3,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const generateToken = (member) => {
+const generateToken = (user) => {
   return new Promise((resolve, reject) => {
     jwt.sign(
       {
-        id: member.id,
-        user_id: member.user_id,
-        nickname: member.nickname,
+        snsId: user.snsId,
+        email: user.email,
+        nickname: user.nickname,
       },
       process.env.SECRET,
       {

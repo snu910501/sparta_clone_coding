@@ -28,12 +28,12 @@ class SignupRepository {
     }
   }
 
-  registerKakaoUser = async (email, id, nickname) => {
+  registerKakaoUser = async (snsId, nickname, email) => {
     try {
       let user = await User.create({
         email: email,
         nickname: nickname,
-        userId: id,
+        snsId: id,
         provider: 'kakao',
       })
 
