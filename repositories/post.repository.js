@@ -75,10 +75,10 @@ class PostRepository {
     }
   };
 
-  updatePost = async (postId, content, tag) => {
+  updatePost = async (postId, title, content, tag) => {
     try {
       const post = await Post.update(
-        { content, tag },
+        { title, content, tag },
         { where: { postId: postId } }
       );
       return post;

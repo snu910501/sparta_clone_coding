@@ -49,7 +49,7 @@ class PostService {
     }
   };
 
-  updatePost = async (userId, postId, content, tag) => {
+  updatePost = async (userId, postId, title, content, tag) => {
     try {
       const findPost = await this.postRepository.findPost(postId);
       if (!findPost) throw new ErrorMiddleware(404, "영상 없음");
@@ -57,7 +57,12 @@ class PostService {
       if (findPost.dataValues.userId != userId)
         throw new ErrorMiddleware(403, "영상 주인 아님");
 
-      const post = await this.postRepository.updatePost(postId, content, tag);
+      const post = await this.postRepository.updatePost(
+        postId,
+        title,
+        content,
+        tag
+      );
       return post;
     } catch (err) {
       throw err;

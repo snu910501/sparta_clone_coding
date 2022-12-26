@@ -39,9 +39,9 @@ class PostController {
     try {
       const postId = req.params.postId;
       const userId = res.locals.user;
-      const { content, tag } = req.body;
+      const { title, content, tag } = req.body;
 
-      await this.postService.updatePost(userId, postId, content, tag);
+      await this.postService.updatePost(userId, postId, title, content, tag);
       return res.status(200).json({ message: "영상 수정 성공" });
     } catch (err) {
       return res.status(err.status).json({ errorMessage: err.errorMessage });

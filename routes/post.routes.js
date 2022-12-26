@@ -24,7 +24,7 @@ const upload = multer({
 router.get("/", postController.findAllPost);
 router.post(
   "/",
-  authMiddleware,
+  // authMiddleware,
   upload.single("video"),
   postController.createPost
 );
