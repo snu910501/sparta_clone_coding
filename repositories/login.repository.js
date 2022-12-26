@@ -24,7 +24,7 @@ class LoginRepository {
           snsId: snsId
         }
       })
-
+      console.log('userExistzz', userExist);
       return userExist;
     } catch (err) {
       console.log('LoginRepository findKakaoUser Error');

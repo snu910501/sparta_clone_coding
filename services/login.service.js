@@ -106,7 +106,7 @@ class LoginService {
           token: token,
         };
       } else {
-
+        console.log(userExist);
         const token = jwt.sign({
           snsId: userExist.snsId,
           nickname: userExist.nickname,
