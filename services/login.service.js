@@ -53,46 +53,73 @@ class LoginService {
 
   kakaoLogin = async (code) => {
     try {
-      console.log('zzz', process.env.KAKAO_REST_API_KEY, process.env.KAKAO_REDIRECT_URI)
+
       const {
         data: { access_token: kakaoAccessToken },
       } = await axios('https://kauth.kakao.com/oauth/token', {
         params: {
           grant_type: 'authorization_code',
           client_id: process.env.KAKAO_REST_API_KEY,
-          redirect_uri: process.env.KAKAO_REDIRECT_URI + '?platform=kakao',
+          // + '?platform=kakao'
+          redirect_uri: process.env.KAKAO_REDIRECT_URI,
           code: code,
         },
         // headers: {
         //   'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         // }
       }); //액세스 토큰을 받아온다
-      console.log('여기는?');
       const { data: kakaoUser } = await axios('https://kapi.kakao.com/v2/user/me', {
         headers: {
           Authorization: `Bearer ${kakaoAccessToken}`,
         },
       });
 
-      let userExist = await this.loginRepository.findKakaoUser(kakaoUser.id);
+      let snsId = kakaoUser.id
+      let nickname = kakaoUser.properties.nickname;
+      let email = kakaoUser.kakao_account.email;
 
-      if (!userExist) {
-        let user = await this.SignupRepository.registerKakaoUser({
-          snsId: kakaoUser.id,
-          nickname: kakaoUser.properties.nickname,
-          email: kakaoUser.kakao_account.email,
-          provider: 'kakao',
-        })
-        const accessToken = await generateToken(user);
+
+      let userExist = await this.loginRepository.findKakaoUser(snsId);
+
+      if (userExist == null) {
+        console.log('kakaoUser', snsId, nickname, email, 'hihi')
+        let user = await this.signupRepository.registerKakaoUser(
+          snsId,
+          nickname,
+          email,
+        );
+        console.log('userzz', user);
+        const token = jwt.sign(
+          {
+            snsId: user.snsId,
+            email: user.email,
+            nickname: user.nickname,
+          },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: '1d', //유효기간
+          },)
+
+        console.log('token', token)
         return {
           result: true,
-          token: accessToken,
+          token: token,
         };
       } else {
-        const accessToken = await generateToken(user);
+
+        const token = jwt.sign({
+          snsId: userExist.snsId,
+          nickname: userExist.nickname,
+          email: userExist.email,
+        },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: '1d', //유효기간
+          },)
+        console.log('kkk', token);
         return {
           result: true,
-          token: accessToken,
+          token: token,
         };
       }
 

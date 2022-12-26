@@ -17,19 +17,20 @@ module.exports = class User extends Sequelize.Model {
         },
         nickname: {
           unique: true,
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING(45),
         },
         password: {
           type: Sequelize.STRING(60),
           allowNull: true,
+          defaultValue: null,
         },
         provider: {
           type: Sequelize.STRING(10),
           defaultValue: "local",
         },
         snsId: {
-          type: Sequelize.STRING(30),
+          type: Sequelize.INTEGER,
           allowNull: true,
         },
       },
