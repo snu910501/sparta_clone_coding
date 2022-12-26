@@ -18,11 +18,10 @@ class RtcExchangerService {
   onConnection(socket) {
     console.debug("The socket connection was estabilished:", socket.id);
 
-    socket.on("disconnect", () => this.onDisconnect(socket));
-
     //#region Channel Stream Events
     socket.on("joinStream", (params) => this.onJoinStream(socket, params));
     socket.on("leaveStream", (params) => this.onLeaveStream(socket, params));
+    socket.on("disconnect", () => this.onDisconnect(socket));
     //#endregion
 
     //#region WebRTC Signalling Events
