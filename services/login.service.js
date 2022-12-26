@@ -60,7 +60,8 @@ class LoginService {
         params: {
           grant_type: 'authorization_code',
           client_id: process.env.KAKAO_REST_API_KEY,
-          redirect_uri: process.env.KAKAO_REDIRECT_URI + '?platform=kakao',
+          // + '?platform=kakao'
+          redirect_uri: process.env.KAKAO_REDIRECT_URI,
           code: code,
         },
         // headers: {
