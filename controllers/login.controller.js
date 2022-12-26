@@ -10,7 +10,7 @@ class LoginController {
       let email = req.body.email;
       let password = req.body.password;
 
-      let Token = await this.loginController.login(email, password);
+      let Token = await this.loginService.login(email, password);
       return res.status(200).json({
         result: true,
         token: Token,

@@ -9,7 +9,7 @@ const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 
 const app = express();
-app.set("port", process.env.NODE_ENV || "3000");
+app.set("port", process.env.NODE_ENV || "3001");
 
 sequelize
   .sync({ force: false })
