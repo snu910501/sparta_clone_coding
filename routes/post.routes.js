@@ -24,12 +24,12 @@ const upload = multer({
 router.get("/", postController.findAllPost);
 router.post(
   "/",
-  // authMiddleware,
+  authMiddleware,
   upload.single("video"),
   postController.createPost
 );
 router.get("/:postId", postController.findPost);
-router.patch("/:postId", postController.updatePost);
+router.patch("/:postId", authMiddleware, postController.updatePost);
 router.delete("/:postId", authMiddleware, postController.deletePost);
 
 module.exports = router;
