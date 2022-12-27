@@ -22,10 +22,6 @@ module.exports = class Post extends Sequelize.Model {
           type: Sequelize.STRING(),
           allowNull: true,
         },
-        view: {
-          type: Sequelize.INTEGER(),
-          defaultValue: 0,
-        },
         compVid: {
           type: Sequelize.STRING(),
           allowNull: true,
@@ -52,6 +48,10 @@ module.exports = class Post extends Sequelize.Model {
   }
   static associate(db) {
     db.Post.hasMany(db.Comment, {
+      foreignKey: "postId",
+      sourceKey: "postId",
+    });
+    db.Post.hasMany(db.View, {
       foreignKey: "postId",
       sourceKey: "postId",
     });
