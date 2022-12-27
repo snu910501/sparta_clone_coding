@@ -13,22 +13,22 @@
 `RtcExchangerController` 클래스는 웹 소켓 서버 객체를 생성함과 동시에 기존에 생성한 HTTP 서버 객체에 바인딩 하며, 웹 소켓을 통해 발생하는 각 이벤트별 비즈니스 로직을 구현한 `RtcExchangerService` 클래스의 메소드를 이벤트에 바인딩 하는 역할을 합니다.
 
 > `app.js`
->
-> ```javascript
-> const { RtcExchangerController } = require("./controllers/rtc-exchanger");
-> const {
->   RtcExchangerService,
->   SocketStreamMapper,
->   SocketUserMapper,
-> } = require("./services/rtc-exchanger");
->
-> ...
->
-> new RtcExchangerController(
->   appServer,
->   new RtcExchangerService(new SocketStreamMapper(), new SocketUserMapper())
-> );
-> ```
+
+```javascript
+const { RtcExchangerController } = require("./controllers/rtc-exchanger");
+const {
+  RtcExchangerService,
+  SocketStreamMapper,
+  SocketUserMapper,
+} = require("./services/rtc-exchanger");
+
+...
+
+new RtcExchangerController(
+  appServer,
+  new RtcExchangerService(new SocketStreamMapper(), new SocketUserMapper())
+);
+```
 
 위 코드에서 생성하는 `RtcExchangerService`는 웹 소켓을 통해 발생하는 각 이벤트에 대한 비즈니스 로직을 구현한 클래스입니다.
 
@@ -43,23 +43,23 @@
 먼저, 특정 유저 `A`가 특정 채널명을 기준으로 라이브 스트리밍을 시작하면 스트림이 생성되고, 다른 유저 `B`가 동일한 채널명을 기준으로 `A`가 생성한 스트림에 참여합니다.
 
 > `services/rtc-exchanger/rtc-exchanger.service.js`
->
-> ```javascript
->   onJoinStream(socket, { channelName, user }) {
->     console.debug("The user has joined the channel:", { channelName, user });
-> 
->     socket.join(channelName);
->     socket.broadcast.to(channelName).emit("userJoinedStream", user);
-> 
->     socket.emit(
->       "allStreamUsers",
->       this.socketStreamMapper.getAllStreamIds(channelName)
->     );
-> 
->     this.socketStreamMapper.map(socket, channelName);
->     this.socketUserMapper.map(socket, user);
->   }
-> ```
+
+```javascript
+  onJoinStream(socket, { channelName, user }) {
+    console.debug("The user has joined the channel:", { channelName, user });
+
+    socket.join(channelName);
+    socket.broadcast.to(channelName).emit("userJoinedStream", user);
+
+    socket.emit(
+      "allStreamUsers",
+      this.socketStreamMapper.getAllStreamIds(channelName)
+    );
+
+    this.socketStreamMapper.map(socket, channelName);
+    this.socketUserMapper.map(socket, user);
+  }
+```
 
 특정 클라이언트가 스트림을 생성하거나, 이미 생성된 스트림에 참여하기 위해서 채널명과 함께  `joinStream` 이벤트를 발행하면, 소켓 서버는 채널명을 기준으로 해당 소켓 객체를 `Socket.io`의 `Rooms API`를 기반으로 구현한 스트림에 참여시킵니다.
 
@@ -74,20 +74,20 @@
 각 클라이언트는 서로의 Session Descriptor 객체를 교환하기 위해 `offer`, `receiveOffer`, `answer`, `receiveAnswer`, `candidate`, `receiveCandidate` 이벤트를 구독해야 합니다.
 
 > `services/rtc-exchanger/rtc-exchanger.service.js`
->
-> ```javascript
->   onOffer(socket, { channelName, sessionDescriptor }) {
->     socket.broadcast.to(channelName).emit("receiveOffer", sessionDescriptor);
->   }
-> 
->   onAnswer(socket, { channelName, sessionDescriptor }) {
->     socket.broadcast.to(channelName).emit("receiveAnswer", sessionDescriptor);
->   }
-> 
->   onCandidate(socket, { channelName, candidate }) {
->     socket.broadcast.to(channelName).emit("receiveCandidate", candidate);
->   }
-> ```
+
+```javascript
+  onOffer(socket, { channelName, sessionDescriptor }) {
+    socket.broadcast.to(channelName).emit("receiveOffer", sessionDescriptor);
+  }
+
+  onAnswer(socket, { channelName, sessionDescriptor }) {
+    socket.broadcast.to(channelName).emit("receiveAnswer", sessionDescriptor);
+  }
+
+  onCandidate(socket, { channelName, candidate }) {
+    socket.broadcast.to(channelName).emit("receiveCandidate", candidate);
+  }
+```
 
 특정 클라이언트 `A`가 자신이 참여한 스트림의 채널명과 WebRTC API를 통해 생성한 Session Descriptor 객체를 인수로 하여 `offer` 이벤트를 발행함과 동시에 `receiveAnswer` 이벤트를 구독합니다.
 
@@ -100,24 +100,24 @@
 특정 유저의 웹 소켓 연결이 끊어져 `disconnect` 이벤트가 발행되거나, `leaveStream` 이벤트를 발행한 경우, 해당 유저를 스트림에서 제외합니다.
 
 > `services/rtc-exchanger/rtc-exchanger.service.js`
->
-> ```javascript
->  onLeaveStream(socket, { channelName, user }) {
->    console.debug("The user has left the channel:", { channelName, user });
->
->    socket.leave(channelName);
->    socket.broadcast.to(channelName).emit("userLeftStream", user);
->
->    this.socketStreamMapper.unmap(socket);
->    this.socketUserMapper.unmap(socket);
->  }
->
->  onDisconnect(socket) {
->    const channelName = this.socketStreamMapper.get(socket);
->    const user = this.socketUserMapper.get(socket);
->
->    this.onLeaveStream(socket, { channelName, user });
->  }
-> ```
+
+```javascript
+ onLeaveStream(socket, { channelName, user }) {
+   console.debug("The user has left the channel:", { channelName, user });
+
+   socket.leave(channelName);
+   socket.broadcast.to(channelName).emit("userLeftStream", user);
+
+   this.socketStreamMapper.unmap(socket);
+   this.socketUserMapper.unmap(socket);
+ }
+
+ onDisconnect(socket) {
+   const channelName = this.socketStreamMapper.get(socket);
+   const user = this.socketUserMapper.get(socket);
+
+   this.onLeaveStream(socket, { channelName, user });
+ }
+```
 
 스트림에서 이탈한 즉시 해당 스트림에 존재하는 모든 유저에게 자신의 유저 객체를 인수로 하여 `userLeftStream` 이벤트가 발행되며, 해당 이벤트를 구독하여 어떤 유저가 스트림에서 이탈하였는지 알 수 있습니다.
