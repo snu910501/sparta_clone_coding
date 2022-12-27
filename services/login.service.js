@@ -92,7 +92,7 @@ class LoginService {
 
         const token = jwt.sign(
           {
-            snsId: user.snsId,
+            userId: user.userId,
             email: user.email,
             nickname: user.nickname,
           },
@@ -110,7 +110,7 @@ class LoginService {
 
         const token = jwt.sign(
           {
-            snsId: userExist.snsId,
+            userId: userExist.userId,
             nickname: userExist.nickname,
             email: userExist.email,
           },

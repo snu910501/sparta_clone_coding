@@ -5,15 +5,26 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
 const jwt = require('jsonwebtoken');
+const nunjucks = require("nunjucks");
 
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
+const connect = require('./schemas');
+const webSocket = require('./socket');
 
-const User = require('./models/user')
+const User = require('./models/user');
 
 const app = express();
-app.set("port", process.env.NODE_ENV || "3000");
+app.set("port", process.env.NODE_ENV || "3001");
 
+// 아래 삭제
+app.set('view engine', 'html');
+nunjucks.configure('views', {
+  express: app,
+  watch: true,
+});
+//
+connect();
 sequelize
   .sync({ force: false })
   .then(() => {
@@ -28,13 +39,16 @@ const corsOption = {
   credentials: true,
   exposedHeaders: ["set-cookie"],
 };
-
+// 아래 삭제
+app.use(express.static(path.join(__dirname, 'public')));
+//
 app.use(cors(corsOption));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
+// 새로고침인데 이거 분리시켜야함//
 app.use('/auth', function (req, res, next) {
   // 새로고침 마다 토큰 검사
   const { authorization } = req.headers;
@@ -73,9 +87,10 @@ app.use('/auth', function (req, res, next) {
 
   return;
 })
-
 app.use("/", indexRouter);
 
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중");
 });
+
+webSocket(server, app);
