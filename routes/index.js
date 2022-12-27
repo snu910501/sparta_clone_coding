@@ -10,5 +10,6 @@ router.use("/login", loginRouter);
 router.use("/signup", signupRouter);
 router.use("/post", postRouter);
 router.use("/comment", commentRouter);
+// router.use('/auth', authRouter);
 
 module.exports = router;
