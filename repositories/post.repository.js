@@ -36,6 +36,7 @@ class PostRepository {
 
       const allPosts = await Post.findAll({
         where,
+        subQuery: false,
         limit: 16,
         attributes: [
           "postId",
@@ -54,7 +55,7 @@ class PostRepository {
         order: [["createdAt", "DESC"]],
         raw: true,
       });
-
+      console.log(allPosts);
       return allPosts;
     } catch (err) {
       throw err;
@@ -70,6 +71,7 @@ class PostRepository {
             { content: { [Op.like]: `%${keyword}%` } },
           ],
         },
+        subQuery: false,
         limit: 16,
         attributes: [
           "postId",
@@ -100,6 +102,7 @@ class PostRepository {
     try {
       const posts = await Post.findAll({
         where: { tag: { [Op.like]: `%${tag}%` } },
+        subQuery: false,
         limit: 16,
         attributes: [
           "postId",

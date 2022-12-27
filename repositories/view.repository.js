@@ -9,6 +9,7 @@ class ViewRepository {
           [Op.and]: [{ address: address }, { postId: postId }],
         },
         attributes: ["createdAt"],
+        order: [["createdAt", "DESC"]],
         raw: true,
       });
       return viewed;
