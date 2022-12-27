@@ -24,7 +24,7 @@ class PostService {
       const urlValue = url.split("originals/")[0];
       const origVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}.m3u8`;
       const compVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}_360.m3u8`;
-      const thumbnail = `${urlValue}converted/${keyName}/Default/Thumbnails/${keyName}.0000000.jpg`;
+      const thumbnail = `${urlValue}converted/${keyName}/Default/Thumbnails/${keyName}.0000003.jpg`;
 
       const create = await this.postRepository.createPost(
         title,
