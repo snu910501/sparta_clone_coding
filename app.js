@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
 const jwt = require('jsonwebtoken');
+const socketConfig = require('./config/SocketConfig');
+const http = require('http');
 
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
@@ -75,7 +77,10 @@ app.use('/auth', function (req, res, next) {
 })
 
 app.use("/", indexRouter);
+const server = http.createServer(app);
 
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중");
 });
+
+socketConfig.init(server);
