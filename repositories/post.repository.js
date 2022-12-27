@@ -6,9 +6,9 @@ class PostRepository {
     title,
     content,
     tag,
-    // compVid,
+    compVid,
     origVid,
-    // thumbnail,
+    thumbnail,
     userId
   ) => {
     try {
@@ -16,9 +16,9 @@ class PostRepository {
         title,
         content,
         tag,
-        // compVid,
+        compVid,
         origVid,
-        // thumbnail,
+        thumbnail,
         userId,
       });
       return post;
@@ -41,8 +41,7 @@ class PostRepository {
           "postId",
           "title",
           "thumbnail",
-          // "compVid",
-          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
           "view",
@@ -74,8 +73,7 @@ class PostRepository {
           "title",
           "content",
           "thumbnail",
-          // "compVid",
-          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
           "view",
@@ -101,8 +99,7 @@ class PostRepository {
           "postId",
           "title",
           "thumbnail",
-          // "compVid",
-          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
           "view",
