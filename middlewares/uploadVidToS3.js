@@ -34,5 +34,6 @@ module.exports = uploadVidToS3 = async (vid) => {
   });
 
   const url = result.Location;
-  return url;
+  const key = result.Key;
+  return { url, key };
 };

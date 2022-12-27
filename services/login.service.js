@@ -108,11 +108,12 @@ class LoginService {
         };
       } else {
 
-        const token = jwt.sign({
-          snsId: userExist.snsId,
-          nickname: userExist.nickname,
-          email: userExist.email,
-        },
+        const token = jwt.sign(
+          {
+            snsId: userExist.snsId,
+            nickname: userExist.nickname,
+            email: userExist.email,
+          },
           process.env.SECRET_KEY,
           {
             expiresIn: '1d', //유효기간
