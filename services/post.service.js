@@ -118,7 +118,7 @@ class PostService {
       const findPost = await this.postRepository.findPost(postId);
       if (!findPost) throw new ErrorMiddleware(404, "영상 없음");
 
-      if (findPost.dataValues.userId != userId)
+      if (findPost.userId != userId)
         throw new ErrorMiddleware(403, "영상 주인 아님");
 
       const post = await this.postRepository.updatePost(
@@ -138,7 +138,7 @@ class PostService {
       const findPost = await this.postRepository.findPost(postId);
       if (!findPost) throw new ErrorMiddleware(404, "영상 없음");
 
-      if (findPost.dataValues.userId != userId)
+      if (findPost.userId != userId)
         throw new ErrorMiddleware(403, "영상 주인 아님");
 
       const post = await this.postRepository.deletePost(postId);
