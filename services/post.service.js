@@ -51,6 +51,7 @@ class PostService {
 
       return allPosts;
     } catch (err) {
+      console.log(err);
       throw err;
     }
   };
