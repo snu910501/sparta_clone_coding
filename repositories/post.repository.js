@@ -1,4 +1,4 @@
-const { Post, User } = require("../models/");
+const { Post, User, View } = require("../models/");
 const { Sequelize, Op } = require("sequelize");
 
 class PostRepository {
@@ -44,9 +44,12 @@ class PostRepository {
           "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
-          "view",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         group: "postId",
         order: [["createdAt", "DESC"]],
         raw: true,
@@ -76,9 +79,12 @@ class PostRepository {
           "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
-          "view",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         group: "postId",
         order: [["createdAt", "DESC"]],
         raw: true,
@@ -102,9 +108,12 @@ class PostRepository {
           "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
-          "view",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         group: "postId",
         order: [["createdAt", "DESC"]],
         raw: true,
@@ -123,7 +132,6 @@ class PostRepository {
         attributes: [
           "postId",
           "title",
-          "view",
           "content",
           "thumbnail",
           "tag",
@@ -131,8 +139,12 @@ class PostRepository {
           [Sequelize.col("User.nickname"), "nickname"],
           [Sequelize.col("User.userId"), "userId"],
           "updatedAt",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         raw: true,
       });
       return post;
@@ -157,18 +169,6 @@ class PostRepository {
     try {
       const post = await Post.destroy({ where: { postId: postId } });
       return post;
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  addView = async (postId) => {
-    try {
-      const addView = await Post.update(
-        { view: Sequelize.literal("view + 1") },
-        { where: { postId: postId } }
-      );
-      return addView;
     } catch (err) {
       throw err;
     }
