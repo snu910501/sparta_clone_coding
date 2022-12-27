@@ -14,13 +14,25 @@ class PostService {
       if (!title || !content || !vid)
         throw new ErrorMiddleware(406, "제목 내용 또는 영상 없음");
 
-      const origVid = await uploadVidToS3(vid);
+      // 람다 영상 변환 시 " " 읽기 에러가 생겨 제거
+      let name = vid.originalname.replaceAll(" ", "");
+      vid.originalname = name;
+      const { url, key } = await uploadVidToS3(vid);
+
+      // 람다 변환된 링크로 문자열 변환
+      const keyName = key.split("originals/")[1].replace(".mp4", "");
+      const urlValue = url.split("originals/")[0];
+      const origVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}.m3u8`;
+      const compVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}_360.m3u8`;
+      const thumbnail = `${urlValue}converted/${keyName}/Default/Thumbnails/${keyName}.0000003.jpg`;
+
       const create = await this.postRepository.createPost(
         title,
         content,
         tag,
+        compVid,
         origVid,
-        // thumbnail,
+        thumbnail,
         userId
       );
       return create;
@@ -39,6 +51,7 @@ class PostService {
 
       return allPosts;
     } catch (err) {
+      console.log(err);
       throw err;
     }
   };
@@ -106,7 +119,7 @@ class PostService {
       const findPost = await this.postRepository.findPost(postId);
       if (!findPost) throw new ErrorMiddleware(404, "영상 없음");
 
-      if (findPost.dataValues.userId != userId)
+      if (findPost.userId != userId)
         throw new ErrorMiddleware(403, "영상 주인 아님");
 
       const post = await this.postRepository.updatePost(
@@ -126,7 +139,7 @@ class PostService {
       const findPost = await this.postRepository.findPost(postId);
       if (!findPost) throw new ErrorMiddleware(404, "영상 없음");
 
-      if (findPost.dataValues.userId != userId)
+      if (findPost.userId != userId)
         throw new ErrorMiddleware(403, "영상 주인 아님");
 
       const post = await this.postRepository.deletePost(postId);

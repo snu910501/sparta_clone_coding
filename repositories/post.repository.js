@@ -1,4 +1,4 @@
-const { Post, User } = require("../models/");
+const { Post, User, View } = require("../models/");
 const { Sequelize, Op } = require("sequelize");
 
 class PostRepository {
@@ -6,9 +6,9 @@ class PostRepository {
     title,
     content,
     tag,
-    // compVid,
+    compVid,
     origVid,
-    // thumbnail,
+    thumbnail,
     userId
   ) => {
     try {
@@ -16,9 +16,9 @@ class PostRepository {
         title,
         content,
         tag,
-        // compVid,
+        compVid,
         origVid,
-        // thumbnail,
+        thumbnail,
         userId,
       });
       return post;
@@ -36,23 +36,26 @@ class PostRepository {
 
       const allPosts = await Post.findAll({
         where,
+        subQuery: false,
         limit: 16,
         attributes: [
           "postId",
           "title",
           "thumbnail",
-          // "compVid",
-          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
-          "view",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         group: "postId",
         order: [["createdAt", "DESC"]],
         raw: true,
       });
-
+      console.log(allPosts);
       return allPosts;
     } catch (err) {
       throw err;
@@ -68,19 +71,22 @@ class PostRepository {
             { content: { [Op.like]: `%${keyword}%` } },
           ],
         },
+        subQuery: false,
         limit: 16,
         attributes: [
           "postId",
           "title",
           "content",
           "thumbnail",
-          // "compVid",
-          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
-          "view",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         group: "postId",
         order: [["createdAt", "DESC"]],
         raw: true,
@@ -96,18 +102,21 @@ class PostRepository {
     try {
       const posts = await Post.findAll({
         where: { tag: { [Op.like]: `%${tag}%` } },
+        subQuery: false,
         limit: 16,
         attributes: [
           "postId",
           "title",
           "thumbnail",
-          // "compVid",
-          [Sequelize.col("origVid"), "compVid"], // 압축 시도 전까지 원본 송출
+          "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
           "createdAt",
-          "view",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         group: "postId",
         order: [["createdAt", "DESC"]],
         raw: true,
@@ -126,7 +135,6 @@ class PostRepository {
         attributes: [
           "postId",
           "title",
-          "view",
           "content",
           "thumbnail",
           "tag",
@@ -134,8 +142,12 @@ class PostRepository {
           [Sequelize.col("User.nickname"), "nickname"],
           [Sequelize.col("User.userId"), "userId"],
           "updatedAt",
+          [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
-        include: [{ model: User, attributes: [] }],
+        include: [
+          { model: User, attributes: [] },
+          { model: View, as: "Views", attributes: [] },
+        ],
         raw: true,
       });
       return post;
@@ -160,18 +172,6 @@ class PostRepository {
     try {
       const post = await Post.destroy({ where: { postId: postId } });
       return post;
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  addView = async (postId) => {
-    try {
-      const addView = await Post.update(
-        { view: Sequelize.literal("view + 1") },
-        { where: { postId: postId } }
-      );
-      return addView;
     } catch (err) {
       throw err;
     }
