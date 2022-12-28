@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
 const http = require("http");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
@@ -32,9 +32,9 @@ sequelize
   });
 
 const corsOption = {
-  origin: ["http://localhost:3000", "*"],
+  origin: "*",
   credentials: true,
-  exposedHeaders: ["set-cookie"],
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOption));
