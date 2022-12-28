@@ -30,7 +30,8 @@ module.exports = (server, app) => {
 
     socket.to(roomId).emit('join', {
       user: 'system',
-      chat: `${res.locals.user.userId}님이 입장하셨습니다.`,
+      chat: '123님이입장하셨스니다'
+      // chat: `${socket.request.res.locals.user.userId}님이 입장하셨습니다.`,
     });
     socket.on('disconnect', () => {
       console.log('chat 네임스페이스 접속 해제');

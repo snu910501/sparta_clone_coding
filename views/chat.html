@@ -5,7 +5,7 @@
   <legend>채팅 내용</legend>
   <div id="chat-list">
     {% for chat in chats %} {% if chat.user === user %}
-    <div class="mine" style="color: {{chat.user}}">
+    <div class="mine" style="color: red">
       <div>{{chat.user}}</div>
       {% if chat.gif %}
       <img src="/gif/{{chat.gif}}" />
@@ -18,7 +18,7 @@
       <div>{{chat.chat}}</div>
     </div>
     {% else %}
-    <div class="other" style="color: {{chat.user}}">
+    <div class="other" style="color: blueviolet">
       <div>{{chat.user}}</div>
       {% if chat.gif %}
       <img src="/gif/{{chat.gif}}" />
@@ -29,7 +29,12 @@
     {% endif %} {% endfor %}
   </div>
 </fieldset>
-<form action="/chat" id="chat-form" method="post" enctype="multipart/form-data">
+<form
+  action="room/chat"
+  id="chat-form"
+  method="post"
+  enctype="multipart/form-data"
+>
   <label for="gif">GIF 올리기</label>
   <input type="file" id="gif" name="gif" accept="image/gif" />
   <input type="text" id="chat" name="chat" />
@@ -83,7 +88,7 @@
     e.preventDefault();
     if (e.target.chat.value) {
       axios
-        .post("/room/{{room._id}}/chat", {
+        .post("/room/room/{{room._id}}/chat", {
           chat: this.chat.value,
         })
         .then(() => {
@@ -107,5 +112,7 @@
         console.error(err);
       });
   });
+
+  // 여기서 부턴 영상//
 </script>
 {% endblock %}

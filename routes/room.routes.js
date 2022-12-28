@@ -40,7 +40,7 @@ router.post('/room', authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/room/:id', authMiddleware, async (req, res, next) => {
+router.get('/room/:id', async (req, res, next) => {
   try {
     const room = await Room.findOne({ _id: req.params.id });
     const io = req.app.get('io');
@@ -57,7 +57,7 @@ router.get('/room/:id', authMiddleware, async (req, res, next) => {
       room,
       title: room.title,
       chats,
-      user: res.locals.user.userId
+      user: 123
     });
   } catch (error) {
     console.error(error);
@@ -78,11 +78,12 @@ router.delete('/room/:id', async (req, res, next) => {
     next(error);
   }
 });
-router.post('/room/:id/chat', authMiddleware, async (req, res, next) => {
+router.post('/room/:id/chat', async (req, res, next) => {
   try {
+    console.log('hihi');
     const chat = await Chat.create({
       room: req.params.id,
-      user: res.locals.user.userId,
+      user: 123,
       chat: req.body.chat,
     });
     req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
