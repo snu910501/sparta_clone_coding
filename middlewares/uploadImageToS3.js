@@ -1,6 +1,7 @@
 const { S3 } = require("aws-sdk");
 const fs = require("fs");
 require("dotenv").config();
+const path = require("path");
 
 module.exports = uploadVidToS3 = async (image) => {
   let url = [];
