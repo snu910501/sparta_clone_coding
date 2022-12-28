@@ -12,6 +12,17 @@ module.exports = uploadVidToS3 = async (image) => {
   });
 
   const promiseList = image.map((file) => {
+    // 이미지 파일 이름 변환 (특수문자, 공백등 S3에서 에러남)
+    const filename = file.originalname
+      .replace(/[^\w.]/g, "") // 숫자,알파벳,"." 제외 전부 제거
+      .replace(/[.]{2,}/g, "."); // "." 연속 두개 이상 하나로 교체
+    let arr = filename.split(".");
+    const extention = arr.pop();
+    let name = arr.join(".").substring(0, 10);
+    name = name.padEnd(3, "a"); // 파일 이름 없으면 길이 3까지 "a"추가
+    file.originalname = `${name}.${extention}`;
+    // 파일 이름 변환 끝
+
     const fileStream = fs.createReadStream(file.path);
     // buffer, stream
 
@@ -19,7 +30,7 @@ module.exports = uploadVidToS3 = async (image) => {
       .upload({
         Bucket: "clone-coding-syk",
         // 파일명
-        Key: `${file.originalname}`,
+        Key: `profiles/${Date.now()}_${file.originalname}`,
         Body: fileStream,
       })
       .promise();
@@ -42,6 +53,6 @@ module.exports = uploadVidToS3 = async (image) => {
       });
     }
   });
-  console.log('rulzz', url[0].location)
+  console.log("rulzz", url[0].location);
   return url;
 };
