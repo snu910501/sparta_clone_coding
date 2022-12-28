@@ -29,7 +29,7 @@ class SignupController {
     // 이메일 중복검사 했나 안했나 확인하는 변수 emailValidate. true여야 다음 로직 실행
     try {
       const { email, nickname, password, passwordConfirm, emailValidate } = req.body;
-      const profileImg = req.file
+      const profileImg = req.files
 
       if (emailValidate == 'true') {
         await this.signupService.registerUser(email, nickname, password, passwordConfirm, profileImg);

@@ -1,7 +1,7 @@
 const SignupRepository = require('../repositories/signup.repository');
 const ErrorMiddleware = require("../middlewares/errorMiddleware");
 const { signupValidate } = require('../middlewares/signupValidate');
-const { uploadImageToS3 } = require('../middlewares/uploadImageToS3')
+const uploadImageToS3 = require('../middlewares/uploadImageToS3')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -14,6 +14,7 @@ class SignupService {
     // 변수에 값이 없다면 가입이 가능하므로 true를 리턴
     try {
       let emailExist = await this.signupRepository.checkEmail(email);
+      console.log(emailExist);
       if (emailExist) {
         const errorMiddleware = new ErrorMiddleware(502, '이메일이 존재하는디? ')
         throw errorMiddleware
@@ -30,15 +31,17 @@ class SignupService {
     try {
       //이메일, 비번 검사하는 단계
       let signupValidateResult = await signupValidate(email, password, passwordConfirm);
-
+      console.log(1);
       if (signupValidateResult == true) {
         const hashedPassword = await bcrypt.hash(password, 6);
+        console.log(2);
         const imageUrl = await uploadImageToS3(profileImg)
+        console.log(3);
         return await this.signupRepository.registerUser(email, nickname, hashedPassword, imageUrl)
       }
 
     } catch (err) {
-      console.log('signupService-registerUser 에러')
+      console.log('signupService-registerUser 에러', err)
       throw err;
     }
   };

@@ -3,24 +3,26 @@ const fs = require("fs");
 require("dotenv").config();
 
 module.exports = uploadVidToS3 = async (image) => {
+  let url = [];
   const s3 = new S3({
     accessKeyId: process.env.ACCESSKEYID,
     secretAccessKey: process.env.SECRETACCESSKEY,
     region: "ap-northeast-2",
   });
 
-  const promiseVid = (image) => {
-    const fileStream = fs.createReadStream(image.path);
+  const promiseList = image.map((file) => {
+    const fileStream = fs.createReadStream(file.path);
+    // buffer, stream
 
-    return s3
-      .upload({
-        Bucket: "clone-coding-syk",
-        // 파일명
-        Key: `thumbnails/${Date.now()}${file.originalname}`,
-        Body: fileStream,
-      })
+    return s3.upload({
+      Bucket: 'clone-coding-syk',
+      // 파일명
+      Key: `${file.originalname}`,
+      Body: fileStream,
+    })
       .promise();
-  };
+  });
+
 
   //   fs.rmdir("uploads/", { recursive: true }, (err) => {
   //     if (err) {
@@ -28,9 +30,12 @@ module.exports = uploadVidToS3 = async (image) => {
   //     }
   //   });
 
-  const result = await Promise.all(promiseVid);
-  console.log("url", result);
-  const url = { location: result.Location, fileName: result.key };
+  const result = await Promise.all(promiseList);
 
-  return url;
+  console.log('url', result);
+  result.map(v => {
+    url.push({ location: v.Location, fileName: v.key })
+  });
+
+  return url
 };

@@ -20,7 +20,7 @@ class SignupRepository {
         email: email,
         nickname: nickname,
         password: hashedPassword,
-        imageUrl: imageUrl
+        imageUrl: imageUrl[0].Location
       })
       return user;
     } catch (err) {
