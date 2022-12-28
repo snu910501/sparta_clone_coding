@@ -31,12 +31,12 @@ class SignupService {
     try {
       //이메일, 비번 검사하는 단계
       let signupValidateResult = await signupValidate(email, password, passwordConfirm);
-      console.log(1);
+
       if (signupValidateResult == true) {
         const hashedPassword = await bcrypt.hash(password, 6);
-        console.log(2);
+
         const imageUrl = await uploadImageToS3(profileImg)
-        console.log(3);
+        console.log('imageUrlzz', imageUrl)
         return await this.signupRepository.registerUser(email, nickname, hashedPassword, imageUrl)
       }
 

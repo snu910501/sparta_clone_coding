@@ -42,6 +42,6 @@ module.exports = uploadVidToS3 = async (image) => {
       });
     }
   });
-
+  console.log('rulzz', url[0].location)
   return url;
 };

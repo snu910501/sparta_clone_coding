@@ -34,7 +34,7 @@ module.exports = class User extends Sequelize.Model {
           allowNull: true,
         },
         imageUrl: {
-          type: Sequelize.STRING(),
+          type: Sequelize.STRING,
           allowNull: true,
         }
       },
