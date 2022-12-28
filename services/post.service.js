@@ -19,7 +19,7 @@ class PostService {
       vid.originalname = name;
       const { url, key } = await uploadVidToS3(vid);
 
-      // 람다 변환된 링크로 문자열 변환
+      // 람다 변환된 링크로 문자열 변환1111111
       const keyName = key.split("originals/")[1].replace(".mp4", "");
       const urlValue = url.split("originals/")[0];
       const origVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}.m3u8`;
