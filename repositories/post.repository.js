@@ -44,6 +44,7 @@ class PostRepository {
           "thumbnail",
           "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
+          [Sequelize.col("User.imageUrl"), "imageUrl"],
           "createdAt",
           [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
@@ -55,7 +56,7 @@ class PostRepository {
         order: [["createdAt", "DESC"]],
         raw: true,
       });
-      console.log(allPosts);
+
       return allPosts;
     } catch (err) {
       throw err;
@@ -80,6 +81,7 @@ class PostRepository {
           "thumbnail",
           "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
+          [Sequelize.col("User.imageUrl"), "imageUrl"],
           "createdAt",
           [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
@@ -110,6 +112,7 @@ class PostRepository {
           "thumbnail",
           "compVid",
           [Sequelize.col("User.nickname"), "nickname"],
+          [Sequelize.col("User.imageUrl"), "imageUrl"],
           "createdAt",
           [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
@@ -141,6 +144,7 @@ class PostRepository {
           "origVid",
           [Sequelize.col("User.nickname"), "nickname"],
           [Sequelize.col("User.userId"), "userId"],
+          [Sequelize.col("User.imageUrl"), "imageUrl"],
           "updatedAt",
           [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
