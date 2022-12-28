@@ -4,12 +4,20 @@ const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
-const jwt = require("jsonwebtoken");
+const http = require("http");
+const jwt = require('jsonwebtoken');
 
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 
 const User = require("./models/user");
+
+const { RtcExchangerController } = require("./controllers/rtc-exchanger");
+const {
+  RtcExchangerService,
+  SocketStreamMapper,
+  SocketUserMapper,
+} = require("./services/rtc-exchanger");
 
 const app = express();
 app.set("port", process.env.NODE_ENV || "3000");
@@ -79,6 +87,13 @@ app.use("/auth", function (req, res, next) {
 app.set("trust proxy", true);
 app.use("/", indexRouter);
 
-app.listen(app.get("port"), () => {
+const appServer = http.createServer(app);
+
+appServer.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중");
 });
+
+new RtcExchangerController(
+  appServer,
+  new RtcExchangerService(new SocketStreamMapper(), new SocketUserMapper())
+);
