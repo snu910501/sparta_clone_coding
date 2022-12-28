@@ -1,7 +1,6 @@
 const PostRepository = require("../repositories/post.repository");
 const CommentRepository = require("../repositories/comment.repository");
 const uploadVidToS3 = require("../middlewares/uploadVidToS3");
-const uploadImageToS3 = require("../middlewares/uploadImageToS3");
 const ErrorMiddleware = require("../middlewares/errorMiddleware");
 const dateCalculator = require("../middlewares/dateCalculator");
 
@@ -14,17 +13,7 @@ class PostService {
       if (!title || !content || !vid)
         throw new ErrorMiddleware(406, "제목 내용 또는 영상 없음");
 
-      // 람다 영상 변환 시 " " 읽기 에러가 생겨 제거
-      let name = vid.originalname.replaceAll(" ", "");
-      vid.originalname = name;
-      const { url, key } = await uploadVidToS3(vid);
-
-      // 람다 변환된 링크로 문자열 변환1111111
-      const keyName = key.split("originals/")[1].replace(".mp4", "");
-      const urlValue = url.split("originals/")[0];
-      const origVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}.m3u8`;
-      const compVid = `${urlValue}converted/${keyName}/Default/HLS/${keyName}_360.m3u8`;
-      const thumbnail = `${urlValue}converted/${keyName}/Default/Thumbnails/${keyName}.0000003.jpg`;
+      const { compVid, origVid, thumbnail } = await uploadVidToS3(vid);
 
       const create = await this.postRepository.createPost(
         title,
