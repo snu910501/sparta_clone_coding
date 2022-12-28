@@ -4,5 +4,8 @@ module.exports = getUserIP = (req) => {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
-  return addr;
+
+  const arr = addr.split(".");
+  const address = arr.slice(arr.length - 2, arr.length).join(".");
+  return address;
 };
