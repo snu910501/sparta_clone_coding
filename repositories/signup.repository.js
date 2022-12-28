@@ -16,14 +16,13 @@ class SignupRepository {
 
   registerUser = async (email, nickname, hashedPassword, imageUrl) => {
     try {
-
+      console.log('registerUse', imageUrl[0].location)
       let user = await User.create({
         email: email,
         nickname: nickname,
         password: hashedPassword,
         imageUrl: imageUrl[0].location
       })
-      console.log('zzz', user);
       return user;
     } catch (err) {
       console.log('signupRepository-registerUser 에러', err)
