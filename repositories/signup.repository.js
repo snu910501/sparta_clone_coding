@@ -14,12 +14,13 @@ class SignupRepository {
     }
   };
 
-  registerUser = async (email, nickname, hashedPassword) => {
+  registerUser = async (email, nickname, hashedPassword, imageUrl) => {
     try {
       let user = await User.create({
         email: email,
         nickname: nickname,
-        password: hashedPassword
+        password: hashedPassword,
+        imageUrl: imageUrl[0].Location
       })
       return user;
     } catch (err) {
