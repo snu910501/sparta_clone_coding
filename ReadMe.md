@@ -18,6 +18,10 @@ Youtube clone coding
 - Socket.io를 사용하여 실시간 데이터 전송 기능 구현
 - KAKAO TALK 로그인 구현
 - 영상 스트리밍
+- multer를 활용해 S3에 동영상 파일 업로드
+- AWS Lambda/MediaConverter를 활용한 화질별(360p, 720p 등) 영상 압축
+  - MediaConverter로 영상에서 썸네일 자동 추출
+- IP주소 기반 조회수 로직 만들기
 
 # 백엔드 기술 스택
 
