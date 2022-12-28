@@ -1,6 +1,7 @@
 const SignupRepository = require('../repositories/signup.repository');
 const ErrorMiddleware = require("../middlewares/errorMiddleware");
 const { signupValidate } = require('../middlewares/signupValidate');
+const { uploadImageToS3 } = require('../middlewares/uploadImageToS3')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -25,14 +26,15 @@ class SignupService {
     }
   };
 
-  registerUser = async (email, nickname, password, passwordConfirm) => {
+  registerUser = async (email, nickname, password, passwordConfirm, profileImg) => {
     try {
       //이메일, 비번 검사하는 단계
       let signupValidateResult = await signupValidate(email, password, passwordConfirm);
 
       if (signupValidateResult == true) {
         const hashedPassword = await bcrypt.hash(password, 6);
-        return await this.signupRepository.registerUser(email, nickname, hashedPassword)
+        const imageUrl = await uploadImageToS3(profileImg)
+        return await this.signupRepository.registerUser(email, nickname, hashedPassword, imageUrl)
       }
 
     } catch (err) {
