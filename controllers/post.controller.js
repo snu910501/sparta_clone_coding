@@ -59,10 +59,11 @@ class PostController {
 
   searchKeyword = async (req, res, next) => {
     try {
-      const keyword = req.query.keyword;
       if (req.query.tag) next();
       else {
-        const posts = await this.postService.searchKeyword(keyword);
+        const keyword = req.query.keyword;
+        const lastId = req.query.lastId;
+        const posts = await this.postService.searchKeyword(keyword, lastId);
         return res.status(200).json({ posts: posts });
       }
     } catch (err) {
@@ -77,7 +78,8 @@ class PostController {
   searchTag = async (req, res, next) => {
     try {
       const tag = req.query.tag;
-      const posts = await this.postService.searchTag(tag);
+      const lastId = req.query.lastId;
+      const posts = await this.postService.searchTag(tag, lastId);
       return res.status(200).json({ posts: posts });
     } catch (err) {
       if (err.status) {

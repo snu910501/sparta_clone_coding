@@ -40,17 +40,17 @@ class PostService {
 
       return allPosts;
     } catch (err) {
-      console.log(err);
       throw err;
     }
   };
 
-  searchKeyword = async (keyword) => {
+  searchKeyword = async (keyword, lastId) => {
     try {
       if (!keyword) throw new ErrorMiddleware(406, "검색어 없음");
-      const posts = await this.postRepository.searchKeyword(keyword);
+      const posts = await this.postRepository.searchKeyword(keyword, lastId);
       posts.map((post) => {
-        post.createdAt = dateCalculator(post.createdAt);
+        const date = post.createdAt;
+        post.createdAt = date.toLocaleDateString();
         return post;
       });
 
@@ -60,10 +60,10 @@ class PostService {
     }
   };
 
-  searchTag = async (tag) => {
+  searchTag = async (tag, lastId) => {
     try {
       if (!tag) throw new ErrorMiddleware(406, "태그 없음");
-      const posts = await this.postRepository.searchTag(tag);
+      const posts = await this.postRepository.searchTag(tag, lastId);
       posts.map((post) => {
         post.createdAt = dateCalculator(post.createdAt);
         return post;
@@ -71,6 +71,7 @@ class PostService {
 
       return posts;
     } catch (err) {
+      console.log(err);
       throw err;
     }
   };
