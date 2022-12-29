@@ -1,0 +1,61 @@
+<html>
+<head>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        const socket = io();
+
+        socket.on('message:receive', function(data) {
+            $('#chat-area').append(`${data.nickname}: ${data.message}\r\n`);
+        });
+
+        $(function () {
+            $('#joinRoom').click(function () {
+                // roomId = postId
+                const roomId = $('#roomId').val();
+
+                // 모든방 나가기
+                socket.emit('room:leave:all', { });
+                // 채팅내역 초기화
+                // $('#chat-area').val('');
+
+                // 방입장
+                socket.emit('room:enter', {
+                    roomId: roomId
+                });
+            });
+            $('#leaveRoom').click(function () {
+                const roomId = $('#roomId').val();
+                socket.emit('room:leave', {
+                    roomId: roomId
+                });
+            });
+
+            $('#sendBtn').click(function () {
+                const roomId = $('#roomId').val();
+                const nickname = $('#nickname').val();
+                const message = $('#chat').val();
+                socket.emit('message:send', {
+                    nickname: nickname,
+                    message: message,
+                    roomId: roomId
+                });
+
+                $('#chat-area').append(`${nickname}: ${message}\r\n`);
+            });
+        })
+    </script>
+</head>
+<body>
+    <textarea id="chat-area" readonly col="10" rows="10"></textarea>
+    <br/> <br/>
+    방번호(게시물아이디): <input type="text" id="roomId" /> <br/>
+    <button id="joinRoom">방입장</button>
+    <button id="leaveRoom">방퇴장</button>
+    <br/> <br/>
+
+    닉네임: <input type="text" id="nickname" /> <br/>
+    챗 내용: <input type="text" id="chat" /> <br/>
+    <button id="sendBtn">전송</button>
+</body>
+</html>
