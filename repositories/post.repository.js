@@ -113,7 +113,7 @@ class PostRepository {
       const posts = await Post.findAll({
         where,
         subQuery: false,
-        limit: 3,
+        limit: 16,
         attributes: [
           "postId",
           "title",
