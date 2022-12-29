@@ -33,6 +33,7 @@ class CommentRepository {
           "commentId",
           "comment",
           [Sequelize.col("User.nickname"), "nickname"],
+          [Sequelize.col("User.imageUrl"), "profile"],
           "createdAt",
         ],
         include: [{ model: User, attributes: [] }],
