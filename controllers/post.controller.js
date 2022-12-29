@@ -62,8 +62,7 @@ class PostController {
       if (req.query.tag) next();
       else {
         const keyword = req.query.keyword;
-        const lastId = req.query.lastId;
-        const posts = await this.postService.searchKeyword(keyword, lastId);
+        const posts = await this.postService.searchKeyword(keyword);
         return res.status(200).json({ posts: posts });
       }
     } catch (err) {
@@ -78,8 +77,7 @@ class PostController {
   searchTag = async (req, res, next) => {
     try {
       const tag = req.query.tag;
-      const lastId = req.query.lastId;
-      const posts = await this.postService.searchTag(tag, lastId);
+      const posts = await this.postService.searchTag(tag);
       return res.status(200).json({ posts: posts });
     } catch (err) {
       if (err.status) {

@@ -44,10 +44,10 @@ class PostService {
     }
   };
 
-  searchKeyword = async (keyword, lastId) => {
+  searchKeyword = async (keyword) => {
     try {
       if (!keyword) throw new ErrorMiddleware(406, "검색어 없음");
-      const posts = await this.postRepository.searchKeyword(keyword, lastId);
+      const posts = await this.postRepository.searchKeyword(keyword);
       posts.map((post) => {
         const date = post.createdAt;
         post.createdAt = date.toLocaleDateString();
@@ -60,10 +60,10 @@ class PostService {
     }
   };
 
-  searchTag = async (tag, lastId) => {
+  searchTag = async (tag) => {
     try {
       if (!tag) throw new ErrorMiddleware(406, "태그 없음");
-      const posts = await this.postRepository.searchTag(tag, lastId);
+      const posts = await this.postRepository.searchTag(tag);
       posts.map((post) => {
         post.createdAt = dateCalculator(post.createdAt);
         return post;
