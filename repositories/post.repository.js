@@ -141,6 +141,7 @@ class PostRepository {
           [Sequelize.col("User.nickname"), "nickname"],
           [Sequelize.col("User.userId"), "userId"],
           [Sequelize.col("User.imageUrl"), "profile"],
+          "createdAt",
           "updatedAt",
           [Sequelize.fn("COUNT", Sequelize.col("Views.postId")), "view"],
         ],
