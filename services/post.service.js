@@ -87,9 +87,10 @@ class PostService {
       const post = await this.postRepository.findPost(postId);
       if (!post) throw new ErrorMiddleware(404, "영상 없음");
 
-      // 날짜 YYYY. MM. DD. 로 변환
-      const date = post.updatedAt;
-      post.updatedAt = date.toLocaleDateString();
+      // 날짜 YYYY. MM. DD. + ~~전 으로 변환
+      post.updatedAt = post.updatedAt.toLocaleDateString();
+      post.createdAt = post.createdAt.toLocaleDateString();
+      post.ago = dateCalculator(post.createdAt);
 
       // 댓글 작성 날짜 ~~전으로 변경
       const comments = await this.cmtRepository.findAllComments(postId);
