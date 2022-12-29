@@ -65,19 +65,13 @@ class PostRepository {
 
   searchKeyword = async (keyword, lastId) => {
     try {
-      let where = {
-        [Op.or]: [
-          { title: { [Op.like]: `%${keyword}%` } },
-          { content: { [Op.like]: `%${keyword}%` } },
-        ],
-      };
-      if (parseInt(lastId, 10)) {
-        where = { ...where, postId: { [Op.lt]: lastId } };
-      }
       const posts = await Post.findAll({
-        where,
-        subQuery: false,
-        limit: 16,
+        where: {
+          [Op.or]: [
+            { title: { [Op.like]: `%${keyword}%` } },
+            { content: { [Op.like]: `%${keyword}%` } },
+          ],
+        },
         attributes: [
           "postId",
           "title",
@@ -104,16 +98,10 @@ class PostRepository {
     }
   };
 
-  searchTag = async (tag, lastId) => {
+  searchTag = async (tag) => {
     try {
-      let where = { tag: { [Op.like]: `%${tag}%` } };
-      if (parseInt(lastId, 10)) {
-        where = { ...where, postId: { [Op.lt]: lastId } };
-      }
       const posts = await Post.findAll({
-        where,
-        subQuery: false,
-        limit: 16,
+        where: { tag: { [Op.like]: `%${tag}%` } },
         attributes: [
           "postId",
           "title",
