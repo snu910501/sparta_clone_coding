@@ -34,12 +34,14 @@ class PostService {
     try {
       const allPosts = await this.postRepository.findAllPost(lastId);
       allPosts.map((post) => {
-        post.createdAt = dateCalculator(post.createdAt);
+        post.createdAt = post.createdAt.toLocaleDateString();
+        post.ago = dateCalculator(post.createdAt);
         return post;
       });
 
       return allPosts;
     } catch (err) {
+      console.log(err);
       throw err;
     }
   };
@@ -49,8 +51,8 @@ class PostService {
       if (!keyword) throw new ErrorMiddleware(406, "검색어 없음");
       const posts = await this.postRepository.searchKeyword(keyword);
       posts.map((post) => {
-        const date = post.createdAt;
-        post.createdAt = date.toLocaleDateString();
+        post.createdAt = post.createdAt.toLocaleDateString();
+        post.ago = dateCalculator(post.createdAt);
         return post;
       });
 
@@ -65,7 +67,8 @@ class PostService {
       if (!tag) throw new ErrorMiddleware(406, "태그 없음");
       const posts = await this.postRepository.searchTag(tag);
       posts.map((post) => {
-        post.createdAt = dateCalculator(post.createdAt);
+        post.createdAt = post.createdAt.toLocaleDateString();
+        post.ago = dateCalculator(post.createdAt);
         return post;
       });
 
@@ -91,7 +94,8 @@ class PostService {
       // 댓글 작성 날짜 ~~전으로 변경
       const comments = await this.cmtRepository.findAllComments(postId);
       comments.map((comment) => {
-        comment.createdAt = dateCalculator(comment.createdAt);
+        comment.createdAt = comment.createdAt.toLocaleDateString();
+        comment.ago = dateCalculator(comment.createdAt);
         return comment;
       });
 
